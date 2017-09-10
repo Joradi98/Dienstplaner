@@ -16,6 +16,44 @@ class Kalender
 							     '11' => 'November',
 					             '12' => 'Dezember' );
 	
+	public function Kalender()
+	{
+	 	date_default_timezone_set('UTC');
+ 	}
+	
+	
+	///Gibt das Datum des Montags zurück, mit dem die Woche angefangen hat
+	public function wochenAnfang($termin) {
+
+		$montag = $termin;
+		
+		$weekday = date("w",strtotime($montag));
+		
+		//While weekday is not monday
+		while ($weekday != 1) {
+			$montag = date('Y-m-d',(strtotime ( '- 1 day' , strtotime ( $montag) ) ));
+			$weekday = date("w",strtotime($montag));
+		}	
+
+		return $montag;
+	}
+	
+	///Gibt das Datum des Sonntags zurück, mit dem die Woche endet
+	public function wochenEnde($termin) {
+		$sonntag = $termin;
+			
+		$weekday = date("w",strtotime($sonntag));
+		//While weekday is not sunday
+		while ($weekday != 0) {
+			$sonntag = date('Y-m-d',(strtotime ( '+ 1 day' , strtotime ( $sonntag) ) ));
+			$weekday = date("w",strtotime($sonntag));
+		}	
+
+		return $sonntag;
+
+	}
+	
+	
 	/* setzt den Termin des Kalenders unter Ber�cksichtigung der f�hrenden 0 beim Monat
 	 * �bergabeparameter: 	Monat
 	 * 						Jahr

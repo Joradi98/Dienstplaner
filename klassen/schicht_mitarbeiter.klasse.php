@@ -1,4 +1,7 @@
 <?php
+include('klassen/kalender.klasse.php');
+
+
  class Schicht_Mitarbeiter
  {
  	public $smid;
@@ -103,5 +106,39 @@
  		$puffer = mysql_query("SELECT ma FROM schicht_ma WHERE sid='".$sid."' AND tid='".$tid."'");
  		return mysql_fetch_array($puffer);
  	}
+
+
+	//Holt alle schicht__mitarbeiter Einträge für den gegebenen Mitarbeiter
+	public function hole_schicht_mitarbeiter_durch_mid($mid) 
+	{
+		$schichten_mitarbeiter_feld = array();
+		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."'");
+		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin')))
+		{
+		 	$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
+		}
+		return $schichten_mitarbeiter_feld;
+	}
+
+	//Holt die Anzahl aller Shichten des gegebenen Mitarbeiters in der gegebenen Woche
+	public function anzahl_schichten_diese_woche($mid, $termin) {
+		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
+		$alle_schichten = $this->hole_schicht_mitarbeiter_durch_mid($mid);
+		$kalender = new Kalender();
+		#Begrenzende Tage der Woche
+		$montag = $kalender->wochenAnfang($termin);
+		$sonntag = $kalender->wochenEnde($termin);
+		
+		$schicht_counter = 0;
+		foreach($alle_schichten as $schicht) {
+			#Schaue nur die Schichten innerhalb der Woche an
+			if ($schicht->termin >= $montag && $schicht->termin <= $sonntag) {
+				$schicht_counter += 1;
+			}
+		}
+		return $schicht_counter;
+
+	}
+
  }
  ?>

@@ -2,6 +2,7 @@
 /* Klassen Schicht und Urlaub einbinden */
 include('klassen/schicht.klasse.php');
 include('klassen/urlaub.klasse.php');
+
 date_default_timezone_set('UTC');
 
 if(isset($_GET['sid']) && isset($_GET['tag']) && isset($_GET['monat']) && isset($_GET['jahr']))
@@ -40,7 +41,6 @@ if(isset($_POST['speichern']))
 	else
 	{
 		
-		#TODO: Urlaub checken
 		
 		
      	/* wenn maximale Anzahl nicht �berschritten, speichern der Angaben */
@@ -137,6 +137,7 @@ if(isset($erfolg))
 		$index++;
 	}
   
+
         echo '</table><table id="top_right">';
         if($_SESSION['mitarbeiter']->recht=='1')
         {
@@ -147,18 +148,22 @@ if(isset($erfolg))
 			$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
 			$test = 0;
 
+			#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
+			$schicht_mitarbeiter = new Schicht_Mitarbeiter();
+			$schicht_counter = $schicht_mitarbeiter->anzahl_schichten_diese_woche($mitarbeiter->mid, $termin);
+
 			#Gehe alle Urlaube des Mitarbeiters durch
 			foreach($urlaub_feld as $urlaub_objekt) {
 				#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
 				if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
 					$test='2';
-					echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</option>';
+					echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub</option>';
 
 				} 
 			}
 
 			if($test=='0') {
-            	echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</option>';
+            	echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.' '.$schicht_counter.'x eingeteilt in dieser Woche </option>';
 			}
                 
 			$index++;

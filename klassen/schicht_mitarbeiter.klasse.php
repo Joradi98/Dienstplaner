@@ -1,5 +1,4 @@
 <?php
-include('klassen/kalender.klasse.php');
 
 
  class Schicht_Mitarbeiter
@@ -90,7 +89,7 @@ include('klassen/kalender.klasse.php');
  		return $schichten_mitarbeiter_feld;
  	}
         
-        public function hole_smid_durch_sid_termin_mid($sid,$termin,$mid)
+    public function hole_smid_durch_sid_termin_mid($sid,$termin,$mid)
  	{
  		$puffer = mysql_query("SELECT smid FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'");
  		return mysql_fetch_array($puffer);
@@ -108,7 +107,7 @@ include('klassen/kalender.klasse.php');
  	}
 
 
-	//Holt alle schicht__mitarbeiter Einträge für den gegebenen Mitarbeiter
+	//Holt alle schicht_mitarbeiter Einträge für den gegebenen Mitarbeiter
 	public function hole_schicht_mitarbeiter_durch_mid($mid) 
 	{
 		$schichten_mitarbeiter_feld = array();

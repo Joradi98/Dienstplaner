@@ -2,6 +2,7 @@
 /* Klassen Schicht und Urlaub einbinden */
 include('klassen/schicht.klasse.php');
 include('klassen/urlaub.klasse.php');
+include('klassen/kalender.klasse.php');
 
 date_default_timezone_set('UTC');
 
@@ -152,6 +153,10 @@ if(isset($erfolg))
 			$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 			$schicht_counter = $schicht_mitarbeiter->anzahl_schichten_diese_woche($mitarbeiter->mid, $termin);
 
+
+			
+			
+			
 			#Gehe alle Urlaube des Mitarbeiters durch
 			foreach($urlaub_feld as $urlaub_objekt) {
 				#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
@@ -162,7 +167,12 @@ if(isset($erfolg))
 				} 
 			}
 
-			if($test=='0') {
+
+			#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
+			$einteilungen = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid,$termin,$mitarbeiter->mid);
+			if (count($einteilungen) >= 2) {
+				echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.' schon ausgew&aumlhlt</option>';
+			} else 	if($test=='0') {
             	echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.' '.$schicht_counter.'x eingeteilt in dieser Woche </option>';
 			}
                 

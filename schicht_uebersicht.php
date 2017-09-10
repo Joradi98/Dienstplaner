@@ -1,5 +1,7 @@
 <div id="hauptinhalt">
 <?php
+date_default_timezone_set('UTC');
+
 if(isset($_GET['l'])){
 $sid = $_GET['l'];
 

@@ -1,6 +1,7 @@
 <?php
 include('klassen/kalender.klasse.php');
 include('klassen/schicht.klasse.php');
+date_default_timezone_set('UTC');
 
 $kalender = new Kalender();
 if(isset($_GET['monat'])&&isset($_GET['jahr']))

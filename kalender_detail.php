@@ -2,6 +2,7 @@
 /* Klassen Schicht und Urlaub einbinden */
 include('klassen/schicht.klasse.php');
 include('klassen/urlaub.klasse.php');
+date_default_timezone_set('UTC');
 
 if(isset($_GET['sid']) && isset($_GET['tag']) && isset($_GET['monat']) && isset($_GET['jahr']))
 {
@@ -38,6 +39,10 @@ if(isset($_POST['speichern']))
 	}
 	else
 	{
+		
+		#TODO: Urlaub checken
+		
+		
      	/* wenn maximale Anzahl nicht �berschritten, speichern der Angaben */
 		$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 		$schicht_mitarbeiter->loesche_schicht_mitarbeiter_durch_sid_termin($_POST['sid'], $termin);

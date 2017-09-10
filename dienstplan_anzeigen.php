@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('UTC');
 session_start();
 /* pr�fen, ob Benutzer angemeldet ist und somit das Recht hat die Seite zu sehen, sonst umleiten auf anmelden.php */
 if($_SESSION['mitarbeiter'])

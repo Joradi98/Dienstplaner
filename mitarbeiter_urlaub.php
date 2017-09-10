@@ -70,7 +70,7 @@ if(isset($_POST['speichern']) && $restu_post >= 0) //wenn ein Urlaubseintrag ges
      $zw = explode(".",$_POST['ende']);
      $ende = $zw[2].'.'.$zw[1].'.'.$zw[0]; //Datumsformat Enddatum in JJJJ.MM.TT
      if($_POST['uid']==''){
-        mysql_query('INSERT INTO urlaub VALUES("", "'.$mid.'","'.$start.'","'.$ende.'","'.$_POST['anzahl'].'")');
+        mysql_query('INSERT INTO urlaub VALUES(NULL, "'.$mid.'","'.$start.'","'.$ende.'","'.$_POST['anzahl'].'")');
      }
      else{
         mysql_query('UPDATE urlaub SET ab="'.$start.'", bis="'.$ende.'", tage="'.$_POST['anzahl'].'" WHERE uid="'.$_POST['uid'].'"'); 

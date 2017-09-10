@@ -99,18 +99,22 @@ if(isset($erfolg))
         
         echo '	<table id="top_left" style="height:100px;">';
 	echo '	<tr><th colspan="2" style="vertical-align:top">Eingeteilte Mitarbeiter</th></tr>';
-	
+
 	$index=0;
 	foreach($mitarbeiter_feld as $mitarbeiter)
 	{
+
 		$urlaub = new Urlaub();
 		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
 		$test = 0;
+
 		foreach($schicht_mitarbeiter_feld as $schicht_mitarbeiter)
 		{
+			
           	/* pr�fen ob Mitarbeiter zum gew�hlten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
 			if($schicht_mitarbeiter->mid==$mitarbeiter->mid && $schicht_mitarbeiter->termin==$termin)
 			{
+
 				$test = '1';
 			}
 		}
@@ -132,40 +136,33 @@ if(isset($erfolg))
 			
 		$index++;
 	}
-        
+  
         echo '</table><table id="top_right">';
         if($_SESSION['mitarbeiter']->recht=='1')
         {
         echo '	<tr><th colspan="2">Mitarbeiter hinzuf&uuml;gen</th></tr>';
         echo '<tr><td><select name="'.$index.'">';
-        foreach($mitarbeiter_feld as $mitarbeiter)
-	{
-		$urlaub = new Urlaub();
-		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
-		$test = 0;
-		foreach($schicht_mitarbeiter_feld as $schicht_mitarbeiter)
-		{
-          	/* pr�fen ob Mitarbeiter zum gew�hlten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
-			if($schicht_mitarbeiter->mid==$mitarbeiter->mid && $schicht_mitarbeiter->termin==$termin)
-			{
-				$test = '1';
-				foreach($urlaub_feld as $urlaub_objekt)
-				{
-					if($schicht_mitarbeiter->termin>$urlaub_objekt->ab && $schicht_mitarbeiter->termin<$urlaub_objekt->bis)
-					{
-						$test='2';
-					}
-				}
+       	foreach($mitarbeiter_feld as $mitarbeiter) {
+			$urlaub = new Urlaub();
+			$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
+			$test = 0;
+
+			#Gehe alle Urlaube des Mitarbeiters durch
+			foreach($urlaub_feld as $urlaub_objekt) {
+				#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
+				if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
+					$test='2';
+					echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</option>';
+
+				} 
 			}
-		}
+
+			if($test=='0') {
+            	echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</option>';
+			}
                 
-		if($test=='0')
-		{
-                    echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</option>';
+			$index++;
 		}
-                
-		$index++;
-	}
         echo '</select></td></tr>';
 ?>
 				<tr>

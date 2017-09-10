@@ -1,5 +1,23 @@
 <?php
 
+#Helper functinos
+function addDateIntervals() {
+	$reference = new DateTimeImmutable;
+	$endTime = clone $reference;
+
+	foreach (func_get_args() as $dateInterval) {
+	   	$endTime = $endTime->add($dateInterval);
+	}
+	
+	return $reference->diff($endTime);	
+}
+
+
+
+
+
+
+
 
  class Schicht_Mitarbeiter
  {
@@ -138,6 +156,44 @@
 		return $schicht_counter;
 
 	}
+	
+		
+	public function stunden_diese_woche($mid,$termin) {
+		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
+		$alle_schichten = $this->hole_schicht_mitarbeiter_durch_mid($mid);
+		$kalender = new Kalender();
+		#Begrenzende Tage der Woche
+		$montag = $kalender->wochenAnfang($termin);
+		$sonntag = $kalender->wochenEnde($termin);
+		
+		$interval = new DateInterval("P0Y");
+		foreach($alle_schichten as $schicht) {
+			#Schaue nur die Schichten innerhalb der Woche an
+			if ($schicht->termin >= $montag && $schicht->termin <= $sonntag) {
+				
+				$schicht_infos = new Schicht();
+				$info = $schicht_infos->hole_schicht_durch_id($schicht->sid);
+				
+				$ab = new DateTime($info->ab);
+				$bis = new DateTime($info->bis);
+				
+				$spanne = $ab->diff($bis);
+				$interval = addDateIntervals($interval, $spanne);
+			}
+		}
+		return $interval;
+
+	}
+
 
  }
+
+
+
+
+
+
+
+
+
  ?>

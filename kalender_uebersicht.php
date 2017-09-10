@@ -100,10 +100,16 @@ foreach($kalender_feld as $woche)
 						if($von=='0'&&$bis>0)
 						{
 							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#ffdddd;padding:0px 1px;">'.$ausgabe;
+						} else {
 						}
 						if($von>'0'&&$bis>'0'&&$von<$bis)
 						{
 							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#fffccf;padding:0px 1px;">'.$ausgabe;
+						}
+						if($von>'0'&&$bis>'0'&&$von>$bis)
+						{
+							#Theoretically it can happen that u selected too many employees...
+							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#009900;padding:0px 1px;">'.$ausgabe;
 						}
 						if($von>'0'&&$bis>'0'&&$von==$bis)
 						{

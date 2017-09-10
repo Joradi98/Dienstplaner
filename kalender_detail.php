@@ -37,26 +37,27 @@ if(isset($_POST['speichern']))
 	/* pr�fen der maximalen Mitarbeiteranzahl */
 	if((count($_POST)-3)>$ma_anzahl['ma'])
 	{
-		$fehler = 'Sie k&ouml;nnen nicht soviele Mitarbeiter der Schicht hinzuf&uuml;gen!';
-	}
-	else
-	{
-		
-		
-		
-     	/* wenn maximale Anzahl nicht �berschritten, speichern der Angaben */
-		$schicht_mitarbeiter = new Schicht_Mitarbeiter();
-		$schicht_mitarbeiter->loesche_schicht_mitarbeiter_durch_sid_termin($_POST['sid'], $termin);
-		foreach($_POST as $schluessel => $schicht_mitarbeiter)
-		{
-			if(is_numeric($schluessel))
-			{
-				$schicht_mitarbeiter = new Schicht_Mitarbeiter();
-				$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $_POST[$schluessel], $_POST['termin']);
-			}
-		}
+		$fehler = 'Wollen sie wirklich so viele Mitarbeiter auswaehlen? So viele werden lauf Plan nicht benoetigt.';
+	} else {
 		$erfolg = 'Mitarbeiter in dieser Schicht wurden aktualisiert!';
 	}
+	
+	
+	#Erlaube mehr mitarbeiter als geplant	
+		
+		
+     /* wenn maximale Anzahl nicht �berschritten, speichern der Angaben */
+	$schicht_mitarbeiter = new Schicht_Mitarbeiter();
+	$schicht_mitarbeiter->loesche_schicht_mitarbeiter_durch_sid_termin($_POST['sid'], $termin);
+	foreach($_POST as $schluessel => $schicht_mitarbeiter)
+	{
+		if(is_numeric($schluessel))
+		{
+			$schicht_mitarbeiter = new Schicht_Mitarbeiter();
+			$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $_POST[$schluessel], $_POST['termin']);
+		}
+	}
+	
 }
 
 if(isset($_GET['l']))

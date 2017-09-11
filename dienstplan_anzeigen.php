@@ -72,8 +72,8 @@ $schichtlegende = new Schicht();
 
     			foreach($termine_sql  as $termine)    //Kopfzeile Wochentage
     			{
-                                $zw = explode("-",$termine);
-                                $tag = $zw[2].'.'.$zw[1].'.';
+                   	$zw = explode("-",$termine);
+                  	$tag = $zw[2].'.'.$zw[1].'.';
     				echo '<th class="dienstplan">'.wochentag($termine).'<br/>'.$tag.'</th>';
     			}
     			
@@ -85,20 +85,25 @@ $schichtlegende = new Schicht();
          			echo '<tr>';
          			echo '<td class="name">'.$ma->name.', '.$ma->vname.'</td>';
 
-         			foreach($termine_sql  as $termine)
-    	    			{
+         			foreach($termine_sql  as $termine) {
+						
+						#Alle diesnte für den mitarbeiter holen
 	         			$dienstplan = $dienstplan_anzeige->hole_dienst_durch_termine_mid($termine, $ma->mid);
+						
+						#Leeres feld, falls nicht eingesetzt an dem tag
+						if (count($dienstplan) <= 0) {
+							echo '<td>&nbsp;</td>';
+							continue;
+						}
+						
+						#Falls für mehrere Schichten eingesetzt: mit + verbinden
+						$bezeichnungen = array();
+						foreach($dienstplan as $dienstplan_objekt) {
+							$bezeichnungen[] = $dienstplan_objekt->kbez;
+						}
+						$schichten_beschreibung = join(" + ",$bezeichnungen);
 
-	         			
-
-                         if($termine ==  $dienstplan->termin) //wenn Schicht eingetragen
-	                    {
-	                         echo '<td class="schicht" style="background-color:#'.$dienstplan->color.';">'.$dienstplan->kbez.'</td>';
-                         }
-                         else
-                         {
-                         	echo '<td>&nbsp;</td>';
-                         }
+						echo '<td class="schicht" style="background-color:#'.$dienstplan_objekt->color.';">'.$schichten_beschreibung.'</td>';
 
          			}
          			

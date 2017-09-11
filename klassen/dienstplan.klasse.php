@@ -24,12 +24,16 @@
 		return $dienstplan_objekt_feld;
 	}
         
-        public function hole_dienst_durch_termine_mid($termin, $mid)
+  	public function hole_dienst_durch_termine_mid($termin, $mid)
 	{
+		#Mehrere dienste an einem tag sind moeglich
+		$objekte = array();
 		$puffer = mysql_query("SELECT sma.termin, s.kbez, s.color FROM schicht_mitarbeiter sma JOIN schicht s ON sma.sid =s.sid WHERE sma.termin = '".$termin."' AND mid = '".$mid."'");
-		$dienstplan_objekt = mysql_fetch_object($puffer, 'Dienstplan' , array('termin', 'kbez', 'color'));
+		while ($dienstplan_objekt = mysql_fetch_object($puffer, 'Dienstplan' , array('termin', 'kbez', 'color'))) {
+			$objekte[] = $dienstplan_objekt;
+		}
 
-		return $dienstplan_objekt;
+		return $objekte;
 	}
         
      

@@ -7,7 +7,7 @@
 -- Server Version: 5.0.41
 -- PHP-Version: 5.2.2
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- 
 -- Datenbank: `dienstplaner`

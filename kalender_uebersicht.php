@@ -17,7 +17,6 @@ else
 $kalender_feld = $kalender->hole_kalender();
 $vor = $kalender->hole_vor_monat();
 $nach = $kalender->hole_nach_monat();
-
 $schicht_mitarbeiter_kalender = new Schicht();
 $schicht_mitarbeiter_kalender_feld = $schicht_mitarbeiter_kalender->hole_alle_schichten_fuer_kalender();
 ?>
@@ -129,6 +128,31 @@ foreach($kalender_feld as $woche)
 }
 ?>
 		</table>
-	
+</div>
 
+<div id="monats_stats">
+<?php
+$verwaltung = new Mitarbeiter();
+$alle = $verwaltung->hole_alle_mitarbeiter();
+?>
+	<table>
+  	<tr>
+    	<th>Name</th>
+    	<th>Stunden</th> 
+	</tr>
+  
+	<?php
+		$sm_verwaltung = new Schicht_Mitarbeiter();
+		foreach ($alle as $mitarbeiter) {
+			echo "<tr> <td>" . $mitarbeiter->name . ", " . $mitarbeiter->vname . "</td>";
+			$stunden = $sm_verwaltung->stunden_diesen_monat($mitarbeiter->mid, $termin);
+
+			echo '<td>' . $stunden->format("%H:%I") . "</td> ";
+			echo "</tr>";
+			
+		}
+		
+	?>
+ 
+</table>
 </div>

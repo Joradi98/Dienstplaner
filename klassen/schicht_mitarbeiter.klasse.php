@@ -184,6 +184,32 @@ function addDateIntervals() {
 		return $interval;
 
 	}
+	
+	public function stunden_diesen_monat($mid, $termin) {
+		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
+		$alle_schichten = $this->hole_schicht_mitarbeiter_durch_mid($mid);
+		$kalender = new Kalender();
+
+		$termin = new DateTime($termin);
+		
+		$interval = new DateInterval("P0Y");
+		foreach($alle_schichten as $schicht) {
+			#Schaue nur die Schichten innerhalb des Monats an.
+			$schicht_termin = new DateTime($schicht->termin);
+			if ($schicht_termin->format('Y-m') == $termin->format('Y-m')) {
+				$schicht_infos = new Schicht();
+				$info = $schicht_infos->hole_schicht_durch_id($schicht->sid);
+				
+				$ab = new DateTime($info->ab);
+				$bis = new DateTime($info->bis);
+				
+				$spanne = $ab->diff($bis);
+				$interval = addDateIntervals($interval, $spanne);
+			}
+		}
+		return $interval;
+
+	}
 
 
  }

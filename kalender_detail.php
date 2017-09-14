@@ -111,8 +111,8 @@ if(isset($fehler))
 
 		echo '<tr><td class="tablerow"><input type="checkbox" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname . "</td>";
 
-		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $beginn->format("h:i") . '></td>';
-		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $ende->format("h:i") . '></td>';
+		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $beginn->format("H:i") . '></td>';
+		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $ende->format("H:i") . '></td>';
 			
        	if ($_SESSION['mitarbeiter']->recht=='1') {
        		echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';

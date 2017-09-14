@@ -37,27 +37,16 @@ if(isset($_POST['speichern']))
 	/* pr�fen der maximalen Mitarbeiteranzahl */
 	if((count($_POST)-3)>$ma_anzahl['ma'])
 	{
-		$fehler = 'Wollen sie wirklich so viele Mitarbeiter auswaehlen? So viele werden lauf Plan nicht benoetigt.';
+		$fehler = 'Wollen sie wirklich so viele Mitarbeiter auswaehlen? So viele werden laut Plan nicht benoetigt.';
 	} else {
 		$erfolg = 'Mitarbeiter in dieser Schicht wurden aktualisiert!';
 	}
 	
 	
-	#Erlaube mehr mitarbeiter als geplant	
-		
-		
-     /* wenn maximale Anzahl nicht �berschritten, speichern der Angaben */
+	$new_mid = $_POST['NeuerMA'];
 	$schicht_mitarbeiter = new Schicht_Mitarbeiter();
-	$schicht_mitarbeiter->loesche_schicht_mitarbeiter_durch_sid_termin($_POST['sid'], $termin);
-	foreach($_POST as $schluessel => $schicht_mitarbeiter)
-	{
-		if(is_numeric($schluessel))
-		{
-			$schicht_mitarbeiter = new Schicht_Mitarbeiter();
-			$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $_POST[$schluessel], $_POST['termin']);
-		}
-	}
-	
+	$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $new_mid, $_POST['termin']);
+
 }
 
 if(isset($_GET['l']))
@@ -78,15 +67,16 @@ $schicht = $schicht->hole_schicht_durch_id($sid);
 $schicht_mitarbeiter = new Schicht_Mitarbeiter();
 $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_durch_sid_termin($sid, $termin);
 ?>
+
+
 <div id="submenu">
      <a href="index.php?seite=kalender&sub=uebersicht">zur&uuml;ck zum Kalender</a>
 </div>
 <div id="hauptinhalt">
 
-		<form action="index.php?seite=kalender&sub=detail" method="post">
 <?php
-echo '			<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
-echo '			<p>Ben&ouml;tigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
+echo '<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
+echo '<p>Ben&ouml;tigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
 
 
 if(isset($erfolg))
@@ -94,103 +84,94 @@ if(isset($erfolg))
 	echo '<table><tr><td colspan="2" class="erfolg">'.$erfolg.'</td></tr></table>';
 }
 
-	if(isset($fehler))
-	{
-		echo '<table><tr><td colspan="2" class="fehler">'.$fehler.'</td></tr></table>';
-	}
+if(isset($fehler))
+{
+	echo '<table><tr><td colspan="2" class="fehler">'.$fehler.'</td></tr></table>';
+}
         
-        echo '	<table id="top_left" style="height:100px;">';
+    echo '	<table id="top_left" style="height:100px;">';
 	echo '	<tr><th colspan="2" style="vertical-align:top">Eingeteilte Mitarbeiter</th></tr>';
 
-	$index=0;
-	foreach($mitarbeiter_feld as $mitarbeiter)
+	foreach($schicht_mitarbeiter_feld as $sma)
 	{
-
-		$urlaub = new Urlaub();
-		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
-		$test = 0;
-
-		foreach($schicht_mitarbeiter_feld as $schicht_mitarbeiter)
-		{
-			
-          	/* pr�fen ob Mitarbeiter zum gew�hlten Termin Urlaub hat, wenn ja wird er nicht aufgelistet */
-			if($schicht_mitarbeiter->mid==$mitarbeiter->mid && $schicht_mitarbeiter->termin==$termin)
-			{
-
-				$test = '1';
-			}
-		}
-                
-		if($test=='1')
-		{
-                        $schicht_mitarbeiter_smid = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
+		$ma_manager = new Mitarbeiter();
+		$mitarbeiter = $ma_manager->hole_mitarbeiter_durch_id($sma->mid);
+		print $ma->mid;
 		
-			echo '<tr><td class="tablerow"><input type="checkbox" name="'.$index.'" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
-                        if($_SESSION['mitarbeiter']->recht=='1')
-			 {
-                        echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
-                         }
-                         
-                             echo '</tr>';
-                         
+		#TODO: Was passiert, wenn ein schon eingetragener MA in Urlaub geht?!
+		
+		#$urlaub = new Urlaub();
+		#$urlaub_feld = $urlaub->hole_urlaub_durch_mid($schicht_mitarbeiter->mid);
+        $schicht_mitarbeiter_smid = $sma->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
+	
+		$schicht_manager = new Schicht();
+		$aktuelle_schicht = $schicht_manager->hole_schicht_durch_id($sid);
+		$beginn = new DateTime($aktuelle_schicht->ab);
+		$ende = new DateTime($aktuelle_schicht->bis);
+
+		echo '<tr><td class="tablerow"><input type="checkbox" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname . "</td>";
+
+		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $beginn->format("h:i") . '></td>';
+		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $ende->format("h:i") . '></td>';
 			
-		}
-			
-		$index++;
+       	if ($_SESSION['mitarbeiter']->recht=='1') {
+       		echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
+       	}
+                         
+        echo '</tr>';
+                         
 	}
   
-
         echo '</table><table id="top_right">';
-        if($_SESSION['mitarbeiter']->recht=='1')
-        {
-        echo '	<tr><th colspan="2">Mitarbeiter hinzuf&uuml;gen</th></tr>';
-        echo '<tr><td><select name="'.$index.'">';
-       	foreach($mitarbeiter_feld as $mitarbeiter) {
-			$urlaub = new Urlaub();
-			$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
-			$test = 0;
+        if($_SESSION['mitarbeiter']->recht=='1') {
+			echo '<form action="index.php?seite=kalender&sub=detail" method="post">';
+       		echo '<tr><th colspan="2">Mitarbeiter hinzuf&uuml;gen</th></tr>';
+	
+       		echo '<tr><td><select name="NeuerMA">';
+      
+	 		foreach($mitarbeiter_feld as $mitarbeiter) {
+				$urlaub = new Urlaub();
+				$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
+				$test = 0;
 
-			#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
-			$schicht_mitarbeiter = new Schicht_Mitarbeiter();
-			#Berechen stundenzahl diese woche
-			$stunden = $schicht_mitarbeiter->stunden_diese_woche($mitarbeiter->mid, $termin);
+				#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
+				$schicht_mitarbeiter = new Schicht_Mitarbeiter();
+				#Berechen stundenzahl diese woche
+				$stunden = $schicht_mitarbeiter->stunden_diese_woche($mitarbeiter->mid, $termin);
 			
 			
-			#Gehe alle Urlaube des Mitarbeiters durch
-			foreach($urlaub_feld as $urlaub_objekt) {
-				#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
-				if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
-					$test='2';
-					echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub</option>';
+				#Gehe alle Urlaube des Mitarbeiters durch
+				foreach($urlaub_feld as $urlaub_objekt) {
+					#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
+					if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
+						$test='2';
+						echo '<option disabled value=' . $mitarbeiter->mid . '>' . $mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub </option>';
 
-				} 
-			}
+					} 
+				}
 
 
-			#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
-			$einteilungen = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid,$termin,$mitarbeiter->mid);
-			if (count($einteilungen) >= 2) {
-				echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden->format("%H:%I").'h in dieser Woche</option>';
-			} else 	if($test=='0') {
-            	echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden->format("%H:%I").'h in dieser Woche</option>';
-			}
+				#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
+				$einteilungen = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid,$termin,$mitarbeiter->mid);
+				if (count($einteilungen) >= 2) {
+					echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden->format("%H:%I").'h in dieser Woche</option>';
+				} else 	if($test=='0') {
+            		echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden->format("%H:%I").'h in dieser Woche</option>';
+				}
                 
-			$index++;
+			}
+		
 		}
-        echo '</select></td></tr>';
+		
 ?>
+		</select></td></tr>
 				<tr>
                     <td>
                     	<input type="hidden" name="sid" value="<?php echo $sid; ?>">
                     	<input type="hidden" name="termin" value="<?php echo $jahr.'-'.$monat.'-'.$tag; ?>">
-                        <input class="knopf_speichern" type="submit" name="speichern" value=" "></td>
+                        <input class="knopf_erstellen" type="submit" name="speichern" value=" "></td>
                 </tr>
-<?php    
-        }
-                echo '</table>';
-
-
-?>
+			</table>
 		</form>
 	</div>
 	

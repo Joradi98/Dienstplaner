@@ -644,6 +644,11 @@ input{
         color: #666;
 }
 
+.uhrzeit_text {
+    width: 40px;
+    border-radius: 2px;
+}
+
 .beschriftung
 {
 	text-align: left;

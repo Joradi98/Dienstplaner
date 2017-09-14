@@ -40,7 +40,7 @@ function addDateIntervals() {
  	 */
  	public function schreibe_schicht_mitarbeiter($sid, $mid, $termin)
  	{
-		#Null forauto increment
+		#Null for auto increment
  		mysql_query('INSERT INTO schicht_mitarbeiter VALUES(NULL, "'.$sid.'", "'.$mid.'", "'.$termin.'")');
  	}
  	

@@ -35,8 +35,8 @@ $ma_anzahl = $schicht_ma->hole_mitarbeiter_anzahl_durch_id($sid, $tid);
 
 
 
-/* nach Best�tigung der Angaben */
-if(isset($_POST['speichern']))
+//Neuer Mitarbeiter in der Schicht
+if(isset($_POST['neuerMA']))
 {
 	/* pr�fen der maximalen Mitarbeiteranzahl */
 	if((count($_POST)-3)>$ma_anzahl['ma'])
@@ -54,11 +54,53 @@ if(isset($_POST['speichern']))
 
 }
 
+//Lösche einen Mitarbeiter
 if(isset($_GET['l']))
 {
     $smid = $_GET['l'];
     $schicht_ma->loesche_schicht_mitarbeiter_durch_smid($smid);
            
+}
+
+
+if(isset($_POST['timeUpdate']))
+{
+	$von = $_POST['von'];
+	$bis = $_POST['bis'];
+	$mid = $_POST['mid'];
+	$sid = $_POST['sid'];
+	
+	
+	$verwalter = new Schicht_Mitarbeiter;
+
+	$vorher_ma = $verwalter->hole_einen($sid, $mid, $termin);
+	$alt_beginn = $vorher_ma->von;
+	$alt_ende = $vorher_ma->bis;
+	
+	//Varify input
+	if (! isset($_POST['von']) || strlen($_POST['von']) == 0){
+		$von = $alt_beginn;
+	}
+		
+	if (! isset($_POST['bis']) || strlen($_POST['bis']) == 0 ){
+		$bis = $alt_ende;
+	}
+	
+	$caught = 0;
+	try {
+		$test = new DateTime($von);
+		$test = new DateTime($bis);
+
+	} catch (Exception $e) {
+		$fehler = "Bitte geben Sie eine g&uuml;ltige Uhrzeit an";
+		$caught = 1;
+	} 
+	
+	if ($caught == 0) {
+		$verwalter->update_zeiten($_POST['mid'], $sid, $termin, $von, $bis);
+	}
+
+
 }
 
 
@@ -97,6 +139,8 @@ if(isset($fehler))
     echo '	<table id="top_left" style="height:100px;">';
 	echo '	<tr><th colspan="2" style="vertical-align:top">Eingeteilte Mitarbeiter</th></tr>';
 
+
+
 	foreach($schicht_mitarbeiter_feld as $sma)
 	{
 		$ma_manager = new Mitarbeiter();
@@ -111,20 +155,34 @@ if(isset($fehler))
 	
 		$beginn = new DateTime($sma->von);
 		$ende = new DateTime($sma->bis);
+		
+		#Form for updating individual times
+		echo '<form action="index.php?seite=kalender&sub=detail" method="post">';
 
-		echo '<tr><td class="tablerow"><input type="checkbox" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname . "</td>";
+		echo '<tr><td class="tablerow"><input type="checkbox" name = "mid" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname . "</td>";
 
-		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $beginn->format("H:i") . '></td>';
-		echo '<td class="tablerow"><input type="text" class="uhrzeit_text" placeholder= ' . $ende->format("H:i") . '></td>';
-			
+		echo '<td class="tablerow"><input name="von" type="text" class="uhrzeit_text" placeholder= ' . $beginn->format("H:i") . '></td>';
+		echo '<td class="tablerow"><input name="bis" type="text" class="uhrzeit_text" placeholder= ' . $ende->format("H:i") . '></td>';
        	if ($_SESSION['mitarbeiter']->recht=='1') {
        		echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=detail&l='.$schicht_mitarbeiter_smid['smid'].'&sid='.$sid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'">entfernen</a></td></tr>';
        	}
-                         
+                 
         echo '</tr>';
+
+ 	 	//Hide the button, so pressing enter will submit the form
+		echo '<td><input type="submit" name="timeUpdate" value = "" class = "hidden_submit"></td>';
+		echo "</tr>";
+
+		//Closing the form with necessary information..
+		echo '<input type="hidden" name="sid" value=' . $sid . '>';
+		echo '<input type="hidden" name="termin" value=' . $jahr . '-' .$monat.'-'.$tag . '>';
+		echo '</form>';
+
                          
 	}
-  
+	echo "<tr>";
+
+
         echo '</table><table id="top_right">';
         if($_SESSION['mitarbeiter']->recht=='1') {
 			echo '<form action="index.php?seite=kalender&sub=detail" method="post">';
@@ -172,7 +230,7 @@ if(isset($fehler))
                     <td>
                     	<input type="hidden" name="sid" value="<?php echo $sid; ?>">
                     	<input type="hidden" name="termin" value="<?php echo $jahr.'-'.$monat.'-'.$tag; ?>">
-                        <input class="knopf_erstellen" type="submit" name="speichern" value=" "></td>
+                        <input class="knopf_erstellen" type="submit" name="neuerMA" value=" "></td>
                 </tr>
 			</table>
 		</form>

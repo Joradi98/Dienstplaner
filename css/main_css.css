@@ -691,3 +691,12 @@ input{
     color: green;
     padding: 5px 10px;
 }
+
+.hidden_submit {
+    visibility: hidden; 
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    position: absolute;
+}
+    

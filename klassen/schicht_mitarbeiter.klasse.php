@@ -158,7 +158,24 @@ function addDateIntervals() {
 		return $schicht_counter;
 
 	}
-	
+
+
+	public function hole_einen($sid, $mid, $termin)
+	 {
+	 	$schichten_mitarbeiter_feld = array();
+	 	$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'");
+	 		
+	 	while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
+	 	{
+	 			return $mitarbeiter_schicht_objekt;
+	 	}
+	 	return new Schicht_Mitarbeiter();
+	 }
+
+	public function update_zeiten($mid, $sid, $termin, $von, $bis) {
+		$query = "UPDATE schicht_mitarbeiter SET von='" .  $von . "'" . " , bis='" . $bis . "'" . " WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'";
+		mysql_query($query);
+	}
 		
 	public function stunden_diese_woche($mid,$termin) {
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist

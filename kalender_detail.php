@@ -23,6 +23,10 @@ else
 	$jahr = substr($_POST['termin'], 0, 4);
 }
 
+$schicht_manager = new Schicht();
+$aktuelle_schicht = $schicht_manager->hole_schicht_durch_id($sid);
+
+
 $tid = date('w', mktime(0, 0, 0, $monat, $tag, $jahr));
 
 /* Mitarbeiteranzahl anhand von Tag und Schicht holen */
@@ -45,7 +49,8 @@ if(isset($_POST['speichern']))
 	
 	$new_mid = $_POST['NeuerMA'];
 	$schicht_mitarbeiter = new Schicht_Mitarbeiter();
-	$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $new_mid, $_POST['termin']);
+	
+	$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $new_mid, $_POST['termin'], $aktuelle_schicht->ab, $aktuelle_schicht->bis);
 
 }
 
@@ -104,10 +109,8 @@ if(isset($fehler))
 		#$urlaub_feld = $urlaub->hole_urlaub_durch_mid($schicht_mitarbeiter->mid);
         $schicht_mitarbeiter_smid = $sma->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
 	
-		$schicht_manager = new Schicht();
-		$aktuelle_schicht = $schicht_manager->hole_schicht_durch_id($sid);
-		$beginn = new DateTime($aktuelle_schicht->ab);
-		$ende = new DateTime($aktuelle_schicht->bis);
+		$beginn = new DateTime($sma->von);
+		$ende = new DateTime($sma->bis);
 
 		echo '<tr><td class="tablerow"><input type="checkbox" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname . "</td>";
 

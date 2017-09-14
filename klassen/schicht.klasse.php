@@ -14,7 +14,7 @@ class Schicht
 	public $kbez;
 	public $ab;
 	public $bis;
-        public $color;
+    public $color;
 
 
         /* Konstruktor

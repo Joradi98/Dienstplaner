@@ -25,8 +25,10 @@ function addDateIntervals() {
  	public $sid;
  	public $mid;
  	public $termin;
+ 	public $von;
+	public $bis;
  	
- 	/* Konstruktor
+/* Konstruktor
  	 */
  	public function Schicht_Mitarbeiter()
  	{
@@ -38,10 +40,10 @@ function addDateIntervals() {
  	 * 						Mitarbeiterid
  	 * 						Termin
  	 */
- 	public function schreibe_schicht_mitarbeiter($sid, $mid, $termin)
+ 	public function schreibe_schicht_mitarbeiter($sid, $mid, $termin, $von, $bis)
  	{
 		#Null for auto increment
- 		mysql_query('INSERT INTO schicht_mitarbeiter VALUES(NULL, "'.$sid.'", "'.$mid.'", "'.$termin.'")');
+ 		mysql_query('INSERT INTO schicht_mitarbeiter VALUES(NULL, "'.$sid.'", "'.$mid.'", "'.$termin.'", "'.$von.'", "'.$bis.'")');
  	}
  	
  	/* L�scht alle Schicht_Mitarbeiter anhand der Schichtid
@@ -83,7 +85,7 @@ function addDateIntervals() {
  		$schichten_mitarbeiter_feld = array();
  		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."'");
  		
- 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin')))
+ 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
  		{
  			$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
  		}
@@ -100,7 +102,7 @@ function addDateIntervals() {
  		$schichten_mitarbeiter_feld = array();
  		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
  		
- 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin')))
+ 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
  		{
  			$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
  		}
@@ -130,7 +132,7 @@ function addDateIntervals() {
 	{
 		$schichten_mitarbeiter_feld = array();
 		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."'");
-		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin')))
+		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
 		{
 		 	$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
 		}
@@ -174,8 +176,8 @@ function addDateIntervals() {
 				$schicht_infos = new Schicht();
 				$info = $schicht_infos->hole_schicht_durch_id($schicht->sid);
 				
-				$ab = new DateTime($info->ab);
-				$bis = new DateTime($info->bis);
+				$ab = new DateTime($schicht->von);
+				$bis = new DateTime($schicht->bis);
 				
 				$spanne = $ab->diff($bis);
 				$interval = addDateIntervals($interval, $spanne);
@@ -200,8 +202,8 @@ function addDateIntervals() {
 				$schicht_infos = new Schicht();
 				$info = $schicht_infos->hole_schicht_durch_id($schicht->sid);
 				
-				$ab = new DateTime($info->ab);
-				$bis = new DateTime($info->bis);
+				$ab = new DateTime($schicht->von);
+				$bis = new DateTime($schicht->bis);
 				
 				$spanne = $ab->diff($bis);
 				$interval = addDateIntervals($interval, $spanne);

@@ -1,4 +1,4 @@
-﻿-- phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump
 -- version 2.10.1
 -- http://www.phpmyadmin.net
 -- 
@@ -203,6 +203,8 @@ CREATE TABLE `schicht_mitarbeiter` (
   `sid` int(11) NOT NULL,
   `mid` int(11) NOT NULL,
   `termin` date NOT NULL,
+  `von` varchar(30) collate latin1_general_ci default NULL,
+  `bis` varchar(30) collate latin1_general_ci default NULL,
   PRIMARY KEY  (`smid`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=184 ;
 

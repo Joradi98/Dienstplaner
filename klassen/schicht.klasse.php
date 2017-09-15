@@ -94,7 +94,7 @@ class Schicht
 	 */
 	public function schreibe_schicht($bez, $kbez, $ab, $bis, $color)
 	{
-		mysql_query('INSERT INTO schicht VALUES(" ", "'.$bez.'", "'.$kbez.'", "'.$ab.'", "'.$bis.'", "'.$color.'")');
+		mysql_query('INSERT INTO schicht VALUES(NULL, "'.$bez.'", "'.$kbez.'", "'.$ab.'", "'.$bis.'", "'.$color.'")');
 	}
 	
 	/* Erneuert die bereits vorhandene Schicht

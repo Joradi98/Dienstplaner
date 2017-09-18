@@ -71,7 +71,7 @@ hr
 	height: 151px;
 	width: 900px;
 	background-image: url('../bilder/header.jpg');
-        position: relative;
+    position: relative;
 }
 #kopf_login
 {
@@ -84,10 +84,10 @@ hr
 	text-align: right;
 	float: right;
 	position: absolute;
-        right:60px;
-        top:17px;
+    right:60px;
+    top:17px;
 	color: #fff;
-        font-size: 10px;
+    font-size: 10px;
 }
 #angemeldet a
 {
@@ -205,7 +205,7 @@ hr
     border:1px solid #acacac;
     margin:10px;
     height: 335px;
-    overflow: hidden;
+    overflow: scroll;
 }
 #inhalt_konfig
 {
@@ -215,11 +215,15 @@ hr
 {
     border:1px solid #acacac;
     margin-top: 30px;
-    overflow: hidden;
+    overflow: scroll;
     border-radius: 10px;
     padding: 5px;
+    max-height: 500px;
 }
-
+#stunden_tabelle 
+{
+    border: 1px;
+}
 #zentriert
 {
 	margin: 0 auto;

@@ -28,7 +28,7 @@ $schicht_mitarbeiter_kalender_feld = $schicht_mitarbeiter_kalender->hole_alle_sc
 
 </div>
 <div id="hauptinhalt_kal">
-		<table>
+<table>
 			
 			<tr>
 				<th class="kalenderhead">Montag</th>
@@ -142,16 +142,15 @@ foreach($kalender_feld as $woche)
 ?>
 		</table>
 </div>
-
 <div id="monats_stats">
 <?php
 $verwaltung = new Mitarbeiter();
 $alle = $verwaltung->hole_alle_mitarbeiter();
 ?>
-	<table>
-  	<tr>
+<table class="stunden_tabelle"> 
+	<tr>
     	<th>Name</th>
-    	<th>Stunden</th> 
+    	<th>Stunden diesen Monat</th> 
 	</tr>
   
 	<?php

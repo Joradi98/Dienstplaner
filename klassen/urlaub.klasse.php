@@ -18,7 +18,7 @@ class Urlaub
 	 * �bergabeparameter:	Mitarbeiterid
 	 * R�ckgabewert:		Feld -> Urlaub Objekt(e)
 	 */
-	public function hole_urlaub_durch_mid($mid)
+	public static function hole_urlaub_durch_mid($mid)
 	{
 		$urlaub_feld = array();
 		$puffer = mysql_query("SELECT * FROM urlaub WHERE mid='".$mid."' ORDER BY ab");
@@ -29,7 +29,7 @@ class Urlaub
 		return $urlaub_feld;
 	}
         
-        public function hole_urlaub_durch_uid($uid)
+    public static function hole_urlaub_durch_uid($uid)
 	{
 		$urlaub_feld = array();
 		$puffer = mysql_query("SELECT * FROM urlaub WHERE uid='".$uid."'");

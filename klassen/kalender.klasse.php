@@ -23,7 +23,7 @@ class Kalender
 	
 	
 	///Gibt das Datum des Montags zurück, mit dem die Woche angefangen hat
-	public function wochenAnfang($termin) {
+	public static function wochenAnfang($termin) {
 
 		$montag = $termin;
 		
@@ -39,7 +39,7 @@ class Kalender
 	}
 	
 	///Gibt das Datum des Sonntags zurück, mit dem die Woche endet
-	public function wochenEnde($termin) {
+	public static function wochenEnde($termin) {
 		$sonntag = $termin;
 			
 		$weekday = date("w",strtotime($sonntag));

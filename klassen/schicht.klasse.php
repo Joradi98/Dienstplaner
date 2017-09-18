@@ -16,6 +16,8 @@ class Schicht
 	public $bis;
     public $color;
 
+	//Gibt die standardmäßig verwendete SID für die Sonderschicht zurück.
+	public static $sonderschicht_sid = 0;
 
      /* Konstruktor
 	 */
@@ -25,7 +27,7 @@ class Schicht
 	}
 	
 	//Gibt die standardmäßig verwendete SID für die Sonderschicht zurück.
-	public function sonderschicht_sid() {
+	public static function sonderschicht_sid() {
 		return 0;
 	}
 	
@@ -33,7 +35,7 @@ class Schicht
 	 * �bergabeparameter:	Schichtid
 	 * R�ckgabewert:		Feld -> Schicht Objekt(e)
 	 */
-	public function hole_schicht_durch_id($sid)
+	public static function hole_schicht_durch_id($sid)
 	{
 		$puffer = mysql_query('SELECT * FROM schicht where sid ='.$sid);
 		$schicht_objekt = mysql_fetch_object($puffer, 'Schicht', array('sid', 'bez', 'kbez', 'ab', 'bis'));
@@ -44,7 +46,7 @@ class Schicht
 	/* Holt alle Schichten sortiert nach ab und bis
 	 * R�ckgabewert:		Feld -> Schicht Objekt(e)
 	 */
-	public function hole_alle_schichten()
+	public static function hole_alle_schichten()
 	{
 		$schichten_objekt_feld = array();
 		$puffer = mysql_query('SELECT * FROM schicht ORDER BY ab, bis ASC');
@@ -56,7 +58,7 @@ class Schicht
 		return $schichten_objekt_feld;
 	}
         
-        public function hole_alle_schichtfarben()
+    public static function hole_alle_schichtfarben()
 	{
 		$schichten_farben_feld = array();
 		$puffer = mysql_query('SELECT color FROM schicht');
@@ -73,7 +75,7 @@ class Schicht
 	 * 								Schicht_Mitarbeiter
 	 * 								ben�tigte Mitarbeiteranzahl
 	 */
-	public function hole_alle_schichten_fuer_kalender()
+	public static function hole_alle_schichten_fuer_kalender()
 	{
 		$schicht_mitarbeiter_kalender_feld = array();
 		$puffer = mysql_query('SELECT * FROM schicht_ma');
@@ -87,6 +89,7 @@ class Schicht
 			$schicht_mitarbeiter_kalender_feld[$schicht_mitarbeiter_kalender_reihe['0']][] = $schicht;
 			$schicht_mitarbeiter_kalender_feld[$schicht_mitarbeiter_kalender_reihe['0']][] = $schicht_mitarbeiter_feld;
 			$schicht_mitarbeiter_kalender_feld[$schicht_mitarbeiter_kalender_reihe['0']][][] = $schicht_mitarbeiter_kalender_reihe;
+
 		}
 		return $schicht_mitarbeiter_kalender_feld;
 	}
@@ -97,7 +100,7 @@ class Schicht
 	 * 						Schichtstartzeit
 	 * 						Schichtendzeit
 	 */
-	public function schreibe_schicht($bez, $kbez, $ab, $bis, $color)
+	public static function schreibe_schicht($bez, $kbez, $ab, $bis, $color)
 	{
 		mysql_query('INSERT INTO schicht VALUES(NULL, "'.$bez.'", "'.$kbez.'", "'.$ab.'", "'.$bis.'", "'.$color.'")');
 	}
@@ -109,7 +112,7 @@ class Schicht
 	 * 						Schichtstartzeit
 	 * 						Schichtendzeit
 	 */
-	public function erneuere_schicht($sid, $bez, $kbez, $ab, $bis, $color)
+	public static function erneuere_schicht($sid, $bez, $kbez, $ab, $bis, $color)
 	{
 		mysql_query("UPDATE schicht SET bez='".$bez."', kbez='".$kbez."', ab='".$ab."', bis='".$bis."', color='".$color."' WHERE sid='".$sid."'");
 	}
@@ -117,7 +120,7 @@ class Schicht
 	/* L�scht Schicht anhand der �bergebenen Schichtid
 	 * �bergabeparameter:	Schichtid
 	 */
-	public function loesche_schicht_durch_id($sid)
+	public static function loesche_schicht_durch_id($sid)
 	{
 		mysql_query("DELETE FROM schicht WHERE sid='".$sid."'");
 	}

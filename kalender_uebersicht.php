@@ -77,7 +77,7 @@ foreach($kalender_feld as $woche)
 			{
 				foreach($schicht_mitarbeiter_kalender_feld[$tag_id+1] as $schluessel => $schicht_mitarbeiter_kalender)
 				{
-				
+					#var_dump($schicht_mitarbeiter_kalender);
 					if($schluessel%3==0)
 					{
 						$ausgabe_sid = $schicht_mitarbeiter_kalender->sid;
@@ -120,10 +120,12 @@ foreach($kalender_feld as $woche)
 						{
 							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#ddffdd;padding:0px 1px;">'.$ausgabe;
 						}
+
+						#echo "hier spielt die musik";
+						#echo $ausgabe_sid;
 						#Spezielbehnadlung für die Sonderschicht:
 						if ($bis == 0 && $von > 0) {
 							#$ausgabe =  $schicht_mitarbeiter_kalender->kbez;
-							
 							$ausgabe = "SONDER (" . $von . ")";
 							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#E8F2FF;padding:0px 1px;">'.$ausgabe;
 						}

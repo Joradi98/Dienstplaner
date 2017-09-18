@@ -64,12 +64,19 @@ $schichtfarben = $schicht_neu->hole_alle_schichtfarben();
 <select name="sid" onchange="this.form.submit();">
 <option value="">- Schicht ausw&auml;hlen -</option>
 <?php
-foreach($schicht as $schicht_auswahl)
-{
-        echo '<option value="'.$schicht_auswahl->sid.'" ';
-        if($sid==$schicht_auswahl->sid) echo 'selected';
-        echo ' >'.$schicht_auswahl->bez.' ('.$schicht_auswahl->kbez.')</option>';
+
+foreach($schicht as $schicht_auswahl) {
+	
+	//Verstecke die Sonderschicht
+	if ($schicht_auswahl->sid == Schicht::$sonderschicht_sid) {
+		continue;
+	}
+	
+	echo '<option value="'.$schicht_auswahl->sid.'" ';
+	if($sid==$schicht_auswahl->sid) echo 'selected';
+	echo ' >'.$schicht_auswahl->bez.' ('.$schicht_auswahl->kbez.')</option>';
 }
+
 ?>
 </select>
 </form>

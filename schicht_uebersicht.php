@@ -33,15 +33,21 @@ $schichten_array = $schichten->hole_alle_schichten();
 
 			foreach($schichten_array as $schicht)    // Tabelleninhalt
 			{
-                                $temp = explode(":", $schicht->ab);
-                                $zeitab = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
-                                $temp = explode(":", $schicht->bis);
+				
+				//Verstecke die Sonderschicht
+				if ($schicht->sid == Schicht::$sonderschicht_sid) {
+					continue;
+				}
+							
+				$temp = explode(":", $schicht->ab);
+				$zeitab = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
+				$temp = explode(":", $schicht->bis);
 				$zeitbis = mktime($temp[0], $temp[1], $temp[2], 0, 0, 0);
-                                $ab = date("H:i" , $zeitab);
-                                $bis = date("H:i" , $zeitbis);
+				$ab = date("H:i" , $zeitab);
+				$bis = date("H:i" , $zeitbis);
 				echo '<tr class="hr"><td colspan=7><hr></td></tr>';
-                                echo '	<tr>';
-                                echo '		<td><div class="farbquad" style="background-color:#'.$schicht->color.';"></div></td>';
+				echo '	<tr>';
+				echo '		<td><div class="farbquad" style="background-color:#'.$schicht->color.';"></div></td>';
 				echo '		<td>'.$schicht->bez.'</td>';
 				echo '		<td>'.$schicht->kbez.'</td>';
 				echo '		<td>'.$ab.'</td>';

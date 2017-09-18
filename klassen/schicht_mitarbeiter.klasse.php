@@ -40,7 +40,7 @@ function addDateIntervals() {
  	 * 						Mitarbeiterid
  	 * 						Termin
  	 */
- 	public function schreibe_schicht_mitarbeiter($sid, $mid, $termin, $von, $bis)
+ 	public static function schreibe_schicht_mitarbeiter($sid, $mid, $termin, $von, $bis)
  	{
 		#Null for auto increment
 		$query = 'INSERT INTO schicht_mitarbeiter VALUES(NULL, "'.$sid.'", "'.$mid.'", "'.$termin.'", "'.$von.'", "'.$bis.'")';
@@ -50,7 +50,7 @@ function addDateIntervals() {
  	/* L�scht alle Schicht_Mitarbeiter anhand der Schichtid
  	 * �bergabeparameter:	Schichtid
  	 */
- 	public function loesche_alle_schicht_mitarbeiter_durch_sid($sid)
+ 	public static function loesche_alle_schicht_mitarbeiter_durch_sid($sid)
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE sid='".$sid."'");
  	}
@@ -58,7 +58,7 @@ function addDateIntervals() {
  	/* L�scht alle Schicht_Mitarbeiter anhand der Mitarbeiterid
  	 * �bergabeparameter:	Mitarbeiterid
  	 */
- 	public function loesche_alle_schicht_mitarbeiter_durch_mid($mid)
+ 	public static function loesche_alle_schicht_mitarbeiter_durch_mid($mid)
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE mid='".$mid."'");
  	}
@@ -67,12 +67,12 @@ function addDateIntervals() {
  	 * �bergabeparameter:	Schichtid
  	 * 						Termin
  	 */
- 	public function loesche_schicht_mitarbeiter_durch_sid_termin($sid, $termin)
+ 	public static function loesche_schicht_mitarbeiter_durch_sid_termin($sid, $termin)
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
  	}
         
-        public function loesche_schicht_mitarbeiter_durch_smid($smid)
+    public static function loesche_schicht_mitarbeiter_durch_smid($smid)
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE smid='".$smid."'");
  	}
@@ -81,7 +81,7 @@ function addDateIntervals() {
  	 * �bergabeparameter:	Schichtid
  	 * R�ckgabewert:		Feld -> Schicht_mitarbeiter Objekt(e)
  	 */
- 	public function hole_alle_schicht_mitarbeiter_durch_sid($sid)
+ 	public static function hole_alle_schicht_mitarbeiter_durch_sid($sid)
  	{
  		$schichten_mitarbeiter_feld = array();
  		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."'");
@@ -98,7 +98,7 @@ function addDateIntervals() {
  	 * 						Termin
  	 * R�ckgabewert:		Feld -> Schicht_mitarbeiter Objekt(e)
  	 */
- 	public function hole_alle_schicht_mitarbeiter_durch_sid_termin($sid,$termin)
+ 	public static function hole_alle_schicht_mitarbeiter_durch_sid_termin($sid,$termin)
  	{
  		$schichten_mitarbeiter_feld = array();
  		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
@@ -115,7 +115,7 @@ function addDateIntervals() {
 	 	 * 						Termin
 	 	 * R�ckgabewert:		Feld -> Schicht_mitarbeiter Objekt(e)
 	 	 */
-	 public function hole_alle_schicht_mitarbeiter_durch_mid_termin($mid,$termin)
+	 public static function hole_alle_schicht_mitarbeiter_durch_mid_termin($mid,$termin)
 	 {
 	 	$schichten_mitarbeiter_feld = array();
 	 	$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."' AND termin='".$termin."'");
@@ -132,7 +132,7 @@ function addDateIntervals() {
  	 * 						
  	 * Rückgabewert:		Feld -> Schicht_mitarbeiter Objekt(e)
  	 */
- 	public function hole_alle_schicht_mitarbeiter_durch_termin($termin)
+ 	public static function hole_alle_schicht_mitarbeiter_durch_termin($termin)
  	{
  		$schichten_mitarbeiter_feld = array();
  		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE termin='".$termin."'");
@@ -144,7 +144,7 @@ function addDateIntervals() {
  		return $schichten_mitarbeiter_feld;
  	}
  
-    public function hole_smid_durch_sid_termin_mid($sid,$termin,$mid)
+    public static function hole_smid_durch_sid_termin_mid($sid,$termin,$mid)
  	{
  		$puffer = mysql_query("SELECT smid FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'");
  		return mysql_fetch_array($puffer);
@@ -155,7 +155,7 @@ function addDateIntervals() {
  	 * 						Tagesid
  	 * R�ckgabewert:		Feld -> schicht_ma Objekt(e) mit Mitarbeiteranzahl
  	 */
- 	public function hole_mitarbeiter_anzahl_durch_id($sid, $tid)
+ 	public static function hole_mitarbeiter_anzahl_durch_id($sid, $tid)
  	{
  		$puffer = mysql_query("SELECT ma FROM schicht_ma WHERE sid='".$sid."' AND tid='".$tid."'");
  		return mysql_fetch_array($puffer);
@@ -163,7 +163,7 @@ function addDateIntervals() {
 
 
 	//Holt alle schicht_mitarbeiter Einträge für den gegebenen Mitarbeiter
-	public function hole_schicht_mitarbeiter_durch_mid($mid) 
+	public static function hole_schicht_mitarbeiter_durch_mid($mid) 
 	{
 		$schichten_mitarbeiter_feld = array();
 		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."'");
@@ -175,9 +175,10 @@ function addDateIntervals() {
 	}
 
 	//Holt die Anzahl aller Shichten des gegebenen Mitarbeiters in der gegebenen Woche
-	public function anzahl_schichten_diese_woche($mid, $termin) {
+	public static function anzahl_schichten_diese_woche($mid, $termin) {
+		$verwalter = new Schicht_Mitarbeiter();
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
-		$alle_schichten = $this->hole_schicht_mitarbeiter_durch_mid($mid);
+		$alle_schichten = $verwalter->hole_schicht_mitarbeiter_durch_mid($mid);
 		$kalender = new Kalender();
 		#Begrenzende Tage der Woche
 		$montag = $kalender->wochenAnfang($termin);
@@ -195,7 +196,7 @@ function addDateIntervals() {
 	}
 
 
-	public function hole_einen($sid, $mid, $termin)
+	public static function hole_einen($sid, $mid, $termin)
 	 {
 	 	$schichten_mitarbeiter_feld = array();
 	 	$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'");
@@ -207,14 +208,15 @@ function addDateIntervals() {
 	 	return new Schicht_Mitarbeiter();
 	 }
 
-	public function update_zeiten($mid, $sid, $termin, $von, $bis) {
+	public static function update_zeiten($mid, $sid, $termin, $von, $bis) {
 		$query = "UPDATE schicht_mitarbeiter SET von='" .  $von . "'" . " , bis='" . $bis . "'" . " WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'";
 		mysql_query($query);
 	}
 		
-	public function stunden_diese_woche($mid,$termin) {
+	public static function stunden_diese_woche($mid,$termin) {
+		$verwalter = new Schicht_Mitarbeiter();
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
-		$alle_schichten = $this->hole_schicht_mitarbeiter_durch_mid($mid);
+		$alle_schichten = $verwalter->hole_schicht_mitarbeiter_durch_mid($mid);
 		$kalender = new Kalender();
 		#Begrenzende Tage der Woche
 		$montag = $kalender->wochenAnfang($termin);
@@ -238,9 +240,10 @@ function addDateIntervals() {
 
 	}
 	
-	public function stunden_diesen_monat($mid, $termin) {
+	public static function stunden_diesen_monat($mid, $termin) {
+		$verwalter = new Schicht_Mitarbeiter();
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
-		$alle_schichten = $this->hole_schicht_mitarbeiter_durch_mid($mid);
+		$alle_schichten = $verwalter->hole_schicht_mitarbeiter_durch_mid($mid);
 		$kalender = new Kalender();
 
 		$termin = new DateTime($termin);

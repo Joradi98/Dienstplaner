@@ -13,7 +13,7 @@
  		
  	}
  	
-        public function hole_alle_termine_von_bis($von, $bis)
+    public static function hole_alle_termine_von_bis($von, $bis)
 	{
 		$dienstplan_objekt_feld = array();
 		$puffer = mysql_query('SELECT termin FROM schicht_mitarbeiter WHERE termin BETWEEN "'.$von.'" AND "'.$bis.'" GROUP BY termin ORDER BY termin');
@@ -24,7 +24,7 @@
 		return $dienstplan_objekt_feld;
 	}
         
-  	public function hole_dienst_durch_termine_mid($termin, $mid)
+  	public static function hole_dienst_durch_termine_mid($termin, $mid)
 	{
 		#Mehrere dienste an einem tag sind moeglich
 		$objekte = array();

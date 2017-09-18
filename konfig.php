@@ -38,13 +38,10 @@ if(isset($_GET['action']) && $_GET['action']=='a')
 
     $mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_id($mid);
 
-    if($mitarbeiter->aktiv>0)
-    {
-	$aktiv=0;
-    }
-    else
-    {
-	$aktiv=1;
+    if($mitarbeiter->aktiv>0)  {
+		$aktiv=0;
+    } else {
+		$aktiv=1;
     }
 
     $mitarbeiter->aktiviere_mitarbeiter_durch_id($mid, $aktiv);

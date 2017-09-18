@@ -36,7 +36,7 @@ class Mitarbeiter
 	 *						Passwort (bereits md5 verschlüsselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
-	public function schreibe_mitarbeiter($name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
+	public static function schreibe_mitarbeiter($name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
 	{
 		mysql_query('INSERT INTO mitarbeiter VALUES("","'.$name.'","'.$vname.'","'.$adresse.'","'.$tel.'","'.$email.'","'.$max_h_d.'","'.$max_h_w.'","'.$max_h_m.'","'.$max_u.'","'.$recht.'","","'.$pw.'","'.$aktiv.'")');
 	}
@@ -45,7 +45,7 @@ class Mitarbeiter
 	 * Übergabeparameter:	Mitarbeiterid
 	 * Rückgabewert:		Mitarbeiter Objekt
 	 */
-	public function hole_mitarbeiter_durch_id($mid)
+	public static function hole_mitarbeiter_durch_id($mid)
 	{
 		$puffer = mysql_query('SELECT * FROM mitarbeiter WHERE mid = '.$mid);
 		$mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'tel', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'pw', 'aktiv'));
@@ -57,7 +57,7 @@ class Mitarbeiter
 	 * Übergabeparameter:	Mitarbeiter-E-Mail
 	 * Rückgabewert:		Mitarbeiter Objekt
 	 */
-	public function hole_mitarbeiter_durch_email($email)
+	public static function hole_mitarbeiter_durch_email($email)
 	{
 		$puffer = mysql_query("SELECT * FROM mitarbeiter WHERE email='".$email."'");
 		$mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'tel', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'pw', 'aktiv'));
@@ -68,7 +68,7 @@ class Mitarbeiter
 	/* Holt alle Mitarbeiter
 	 * Rückgabewert:	Feld -> Mitarbeiter Objekt(e)
 	 */
-	public function hole_alle_mitarbeiter()
+	public static function hole_alle_mitarbeiter()
 	{
 		$mitarbeiter_objekt_feld = array();
 		$puffer = mysql_query('SELECT * FROM mitarbeiter');
@@ -94,7 +94,7 @@ class Mitarbeiter
 	 *						Passwort (bereits md5 verschlüsselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
-	public function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
+	public static function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
 	{
 		mysql_query("UPDATE mitarbeiter SET name='".$name."', vname='".$vname."', adresse='".$adresse."', tel='".$tel."', email='".$email."', max_h_d='".$max_h_d."', max_h_w='".$max_h_w."', max_h_m='".$max_h_m."', max_u='".$max_u."', recht='".$recht."', pw='".$pw."', aktiv='".$aktiv."' WHERE mid='".$mid."'");
 	}
@@ -102,7 +102,7 @@ class Mitarbeiter
 	/* Löscht den Mitarbeiter anhand der übergebenen Mitarbeiterid
 	 * Übergabewert:	Mitarbeiterid
 	 */
-	public function loesche_mitarbeiter_durch_id($mid)
+	public static function loesche_mitarbeiter_durch_id($mid)
 	{
 		mysql_query("DELETE FROM mitarbeiter WHERE mid='".$mid."'");
 	}
@@ -111,7 +111,7 @@ class Mitarbeiter
 	 * Übergabeparameter:	Mitarbeiterid
 	 * 						Aktivstatus
 	 */
-	public function aktiviere_mitarbeiter_durch_id($mid, $aktiv)
+	public static function aktiviere_mitarbeiter_durch_id($mid, $aktiv)
 	{
 		mysql_query("UPDATE mitarbeiter SET aktiv=".$aktiv." WHERE mid='".$mid."'");
 	}
@@ -121,15 +121,12 @@ class Mitarbeiter
 	 * Rückgabewert:	True (E-Mail bereits vorhanden)
 	 * 					False (E-Mail noch nicht vorhanden)
 	 */
-	public function teste_email($email)
+	public static function teste_email($email)
 	{
 		$puffer = mysql_query("SELECT * FROM mitarbeiter WHERE email='".$email."'");
-		if(mysql_fetch_row($puffer))
-		{
+		if(mysql_fetch_row($puffer)) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

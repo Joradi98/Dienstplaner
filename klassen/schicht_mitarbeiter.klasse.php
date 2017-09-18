@@ -110,7 +110,23 @@ function addDateIntervals() {
  		return $schichten_mitarbeiter_feld;
  	}
       
-
+	/* Holt alle Schit_Mitarbeiter anhand der Schichtid und dem Termin
+	 	 * �bergabeparameter:	MitarbeiterID
+	 	 * 						Termin
+	 	 * R�ckgabewert:		Feld -> Schicht_mitarbeiter Objekt(e)
+	 	 */
+	 public function hole_alle_schicht_mitarbeiter_durch_mid_termin($mid,$termin)
+	 {
+	 	$schichten_mitarbeiter_feld = array();
+	 	$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."' AND termin='".$termin."'");
+	 		
+	 	while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
+	 	{
+	 		$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
+	 	}
+	 	return $schichten_mitarbeiter_feld;
+	 }
+	
  	/* Holt alle Schit_Mitarbeiter anhand des Termins
  	 * Übergabeparameter:	Termin
  	 * 						
@@ -204,13 +220,12 @@ function addDateIntervals() {
 		$montag = $kalender->wochenAnfang($termin);
 		$sonntag = $kalender->wochenEnde($termin);
 		
-		$interval = new DateInterval("P0Y");
+		$interval = new DateInterval("P0Y"); //0 years
 		foreach($alle_schichten as $schicht) {
 			#Schaue nur die Schichten innerhalb der Woche an
 			if ($schicht->termin >= $montag && $schicht->termin <= $sonntag) {
-				
-				$schicht_infos = new Schicht();
-				$info = $schicht_infos->hole_schicht_durch_id($schicht->sid);
+				echo "Hier das wetter";
+				echo $schicht->sid;
 				
 				$ab = new DateTime($schicht->von);
 				$bis = new DateTime($schicht->bis);
@@ -235,9 +250,6 @@ function addDateIntervals() {
 			#Schaue nur die Schichten innerhalb des Monats an.
 			$schicht_termin = new DateTime($schicht->termin);
 			if ($schicht_termin->format('Y-m') == $termin->format('Y-m')) {
-				$schicht_infos = new Schicht();
-				$info = $schicht_infos->hole_schicht_durch_id($schicht->sid);
-				
 				$ab = new DateTime($schicht->von);
 				$bis = new DateTime($schicht->bis);
 				

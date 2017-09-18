@@ -129,7 +129,6 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 			
 		#Gehe alle Urlaube des Mitarbeiters durch
 		foreach($urlaub_feld as $urlaub_objekt) {
-			print "huhu";
 			#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
 			if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
 				$test='2';

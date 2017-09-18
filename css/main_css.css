@@ -464,10 +464,17 @@ tr.hr td, tr.hr td hr
 	width: 90px;
 	vertical-align: top;
 	border-bottom: 1px solid #ccc;
-        border-right: 1px solid #ccc;
-        overflow:hidden;
-        padding:2px;
+    border-right: 1px solid #ccc;
+    overflow:hidden;
+    padding:2px;
 }
+.tagLink
+{
+    color:#150e7e;
+    border-width: 0px;
+    height: 100px;
+}
+
 .col_7
 {
     border-right:none;
@@ -479,16 +486,16 @@ tr.hr td, tr.hr td hr
 .tablerow{
     border-bottom:1px solid #acacac;
 }
-.kalenderfeld a
+.kalenderLink
 {
 	display: block;
-	width: 40px;
-        height: 10px;
-        float: left;
-        font-size: 8px;
-     color:#000;
-     border: 1px solid #acacac;
-     margin:1px;
+	width: 60px;
+    height: 10px;
+    float: left;
+    font-size: 8px;
+    color:#000;
+    border: 1px solid #acacac;
+    margin:1px;
 }
 .kalenderfeld a:hover
 {
@@ -504,11 +511,11 @@ tr.hr td, tr.hr td hr
 #kalenderueberschrift
 {
 	font-size: 15px;
-        font-weight: bold;
+    font-weight: bold;
 	text-align: center;
 	display: inline-block;
 	width: 200px;
-        color:#1969bc;
+    color:#1969bc;
 }
 #pfeil_links
 {

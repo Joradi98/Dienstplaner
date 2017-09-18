@@ -14,7 +14,8 @@ if(isset($_GET['sub']))
 	{
             case 'uebersicht': include('kalender_uebersicht.php'); break;
             case 'detail': include('kalender_detail.php'); break;
-            
+            case 'tag': include('kalender_tag.php'); break;
+
 	    default: break;
 	}
 }

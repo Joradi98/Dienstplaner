@@ -17,11 +17,16 @@ class Schicht
     public $color;
 
 
-        /* Konstruktor
+     /* Konstruktor
 	 */
 	public function Schicht()
 	{
 		
+	}
+	
+	//Gibt die standardmäßig verwendete SID für die Sonderschicht zurück.
+	public function sonderschicht_sid() {
+		return 0;
 	}
 	
 	/* Holt die jeweilige Schicht anhand der Schichtid

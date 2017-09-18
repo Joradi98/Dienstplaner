@@ -43,7 +43,8 @@ function addDateIntervals() {
  	public function schreibe_schicht_mitarbeiter($sid, $mid, $termin, $von, $bis)
  	{
 		#Null for auto increment
- 		mysql_query('INSERT INTO schicht_mitarbeiter VALUES(NULL, "'.$sid.'", "'.$mid.'", "'.$termin.'", "'.$von.'", "'.$bis.'")');
+		$query = 'INSERT INTO schicht_mitarbeiter VALUES(NULL, "'.$sid.'", "'.$mid.'", "'.$termin.'", "'.$von.'", "'.$bis.'")';
+ 		mysql_query($query);
  	}
  	
  	/* L�scht alle Schicht_Mitarbeiter anhand der Schichtid
@@ -108,7 +109,25 @@ function addDateIntervals() {
  		}
  		return $schichten_mitarbeiter_feld;
  	}
-        
+      
+
+ 	/* Holt alle Schit_Mitarbeiter anhand des Termins
+ 	 * Übergabeparameter:	Termin
+ 	 * 						
+ 	 * Rückgabewert:		Feld -> Schicht_mitarbeiter Objekt(e)
+ 	 */
+ 	public function hole_alle_schicht_mitarbeiter_durch_termin($termin)
+ 	{
+ 		$schichten_mitarbeiter_feld = array();
+ 		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE termin='".$termin."'");
+ 		
+ 		while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
+ 		{
+ 			$schichten_mitarbeiter_feld[] = $mitarbeiter_schicht_objekt;
+ 		}
+ 		return $schichten_mitarbeiter_feld;
+ 	}
+ 
     public function hole_smid_durch_sid_termin_mid($sid,$termin,$mid)
  	{
  		$puffer = mysql_query("SELECT smid FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'");

@@ -94,10 +94,10 @@ if(isset($_GET['seite']))
 {
 	switch($_GET['seite'])
 	{
-            case 'mitarbeiter': include('mitarbeiter.php'); break;
+        case 'mitarbeiter': include('mitarbeiter.php'); break;
 	    case 'konfig': include('konfig.php'); break;
 	    case 'kalender': include('kalender.php'); break;
-            case 'schicht_mitarbeiter': include('schicht_mitarbeiter.php'); break;
+        case 'schicht_mitarbeiter': include('schicht_mitarbeiter.php'); break;
 	    case 'dienstplan': include('dienstplan.php'); break;
 	    default: break;
 	}

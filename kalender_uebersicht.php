@@ -65,54 +65,67 @@ foreach($kalender_feld as $woche)
 		}
 		if($test!='1')
 		{
-			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#acacac;"><span>'.$tag.'</span></td>';
+			//Für die Überhanänge aus anderen Monaten
+			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#acacac;"><span>' .$tag. '</span></td>';
 		}
 		else
 		{
+			#Für den aktuellen Monat
 			$kalender_termin = $kalender->jahr.'-'.$kalender->monat.'-'.$tag;
-			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;"><span>'.$tag.'</span>';
+			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;"><span>'.'<a href="index.php?seite=kalender&sub=tag&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'" style="color:#150e7e;">'.$tag.'</a>'.'</span>';
 			if(isset($schicht_mitarbeiter_kalender_feld[$tag_id+1]))
 			{
 				foreach($schicht_mitarbeiter_kalender_feld[$tag_id+1] as $schluessel => $schicht_mitarbeiter_kalender)
 				{
+				
 					if($schluessel%3==0)
 					{
 						$ausgabe_sid = $schicht_mitarbeiter_kalender->sid;
 						$ausgabe =  $schicht_mitarbeiter_kalender->kbez;
+
 					}
 					if($schluessel%3==1)
 					{
 						$von = 0;
+
 						foreach($schicht_mitarbeiter_kalender as $schicht_mitarbeiter)
 						{
 							if(isset($schicht_mitarbeiter) && $schicht_mitarbeiter->termin==$kalender_termin)
 							{
 								$von = $von + 1;
-							}
+							} 
 						}
 						$ausgabe.= ' ('.$von.'|';
 					}
 					if($schluessel%3==2)
 					{
+
 						$bis = $schicht_mitarbeiter_kalender['0']['2'];
 						$ausgabe .= $bis.')</div></a>';
 						if($von=='0'&&$bis>0)
 						{
-							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#ffdddd;padding:0px 1px;">'.$ausgabe;
-						} else {
-						}
+							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#ffdddd;padding:0px 1px;">'.$ausgabe;
+						} 
+					
 						if($von>'0'&&$bis>'0'&&$von<$bis)
 						{
-							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#fffccf;padding:0px 1px;">'.$ausgabe;
+							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#fffccf;padding:0px 1px;">'.$ausgabe;
 						}
 						if($von>'0'&&$bis>'0'&&$von>$bis)
 						{
 							#Theoretically it can happen that u selected too many employees...
-							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#009900;padding:0px 1px;">'.$ausgabe;
+							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#009900;padding:0px 1px;">'.$ausgabe;
 						}
 						if($von>'0'&&$bis>'0'&&$von==$bis)
 						{
-							echo '<a href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#ddffdd;padding:0px 1px;">'.$ausgabe;
+							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#ddffdd;padding:0px 1px;">'.$ausgabe;
+						}
+						#Spezielbehnadlung für die Sonderschicht:
+						if ($bis == 0 && $von > 0) {
+							#$ausgabe =  $schicht_mitarbeiter_kalender->kbez;
+							
+							$ausgabe = "SONDER (" . $von . ")";
+							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#E8F2FF;padding:0px 1px;">'.$ausgabe;
 						}
 					}
 				}

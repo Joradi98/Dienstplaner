@@ -15,7 +15,6 @@ if($_GET['s']=='speichern')
     for($i=1; $i<=7; $i++) {
 		if(isset($tag[$i]) && $tag[$i]!= "") {
         	/* speichern der Angaben */
-			
 			while($schichten = mysql_fetch_assoc($query)) {
             	$sid = $schichten["sid"];
 
@@ -28,12 +27,14 @@ if($_GET['s']=='speichern')
 				$id = "MA_".$i."_".$sid;
                	$anzahl = $_POST[$id];
 				$update_query = 'UPDATE schicht_ma SET ma='. $anzahl . ' WHERE tid=' . $tid[$i] . ' AND sid=' . $sid . ';';
+
 				$speichern = mysql_query($update_query);
             }
+            mysql_data_seek($query, 0); //array zurücksetzen
 
-        }
+        } 	
 	}
-        $erfolg='Die Daten wurden aktualisiert.';
+    $erfolg='Die Daten wurden aktualisiert.';
 	echo '<table><tr><td colspan="2" class="erfolg">'.$erfolg.'</td></tr></table>';
 }
 

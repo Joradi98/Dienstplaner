@@ -103,6 +103,21 @@ class Schicht
 	public static function schreibe_schicht($bez, $kbez, $ab, $bis, $color)
 	{
 		mysql_query('INSERT INTO schicht VALUES(NULL, "'.$bez.'", "'.$kbez.'", "'.$ab.'", "'.$bis.'", "'.$color.'")');
+		
+		//Beim Erstellen einer neuen Schicht werden die benötigten MA standarmäßig auf 0 gesetzt 
+		$select_query = 'SELECT * FROM schicht WHERE bez="'.$bez . '" AND kbez="'.$kbez . '"';
+		$puffer = mysql_query($select_query);
+		$schicht_objekt = mysql_fetch_object($puffer, 'Schicht', array('sid', 'bez', 'kbez', 'ab', 'bis'));
+		$sid = $schicht_objekt->sid;
+		//Für alle Tage
+		for($i=1; $i<=7; $i++) {
+			$query = 'INSERT INTO schicht_ma VALUES ('.$i. ','.$sid.',0)';
+			echo $query;
+			mysql_query($query);
+			
+		}
+
+		
 	}
 	
 	/* Erneuert die bereits vorhandene Schicht

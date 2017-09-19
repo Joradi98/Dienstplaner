@@ -112,7 +112,6 @@ class Schicht
 		//Für alle Tage
 		for($i=1; $i<=7; $i++) {
 			$query = 'INSERT INTO schicht_ma VALUES ('.$i. ','.$sid.',0)';
-			echo $query;
 			mysql_query($query);
 			
 		}

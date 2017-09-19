@@ -126,7 +126,7 @@ foreach($kalender_feld as $woche)
 						#Spezielbehnadlung für die Sonderschicht:
 						if ($bis == 0 && $von > 0) {
 							#$ausgabe =  $schicht_mitarbeiter_kalender->kbez;
-							$ausgabe = "SONDER (" . $von . ")";
+							$ausgabe = "SONDER (" . $von . ")</div></a>";
 							echo '<a class="kalenderLink" href="index.php?seite=kalender&sub=detail&sid='.$ausgabe_sid.'&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'"><div style="background:#E8F2FF;padding:0px 1px;">'.$ausgabe;
 						}
 					}

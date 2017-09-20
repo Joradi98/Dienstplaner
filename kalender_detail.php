@@ -136,14 +136,12 @@ $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_
 echo '<h2>'.$schicht->bez.' am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
 echo '<p>Ben&ouml;tigte Mitarbeiter: '.$ma_anzahl['ma'].'</p>';
 
-
-if(isset($erfolg))
-{
+#Fehler und Erfolg darstellen, oben im Hauptinhalt
+if(isset($erfolg)) {
 	echo '<table><tr><td colspan="2" class="erfolg">'.$erfolg.'</td></tr></table>';
 }
 
-if(isset($fehler))
-{
+if(isset($fehler)) {
 	echo '<table><tr><td colspan="2" class="fehler">'.$fehler.'</td></tr></table>';
 }
         
@@ -156,7 +154,6 @@ if(isset($fehler))
 	{
 		$ma_manager = new Mitarbeiter();
 		$mitarbeiter = $ma_manager->hole_mitarbeiter_durch_id($sma->mid);
-		print $ma->mid;
 		
 		#TODO: Was passiert, wenn ein schon eingetragener MA in Urlaub geht?!
 		
@@ -211,9 +208,6 @@ if(isset($fehler))
 				#Berechen stundenzahl diese woche
 				$stunden = $schicht_mitarbeiter->stunden_diese_woche($mitarbeiter->mid, $termin);
 			
-				echo "Considerung";
-
-				
 				#Berücksichtige den Urlaub
 				if ( $mitarbeiter->ist_im_Urlaub($termin) ) {
 					$test='2';

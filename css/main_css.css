@@ -17,6 +17,7 @@ h2
     font-size:14px;
     margin:0px;
 }
+
 a
 {
     text-decoration: none;
@@ -155,9 +156,21 @@ hr
 	width: 166px;
 	height: 43px;
 	background-image: url('../bilder/navi_dienstplan_bg.png');
-        float: left;
+	float: left;
 }
 #menu_dienstplan:hover, .dienstplan_active
+{
+	background-position: 0 -43px;
+}
+/*  Menu Item: Standard plan */
+#menu_standard_plan
+{
+	width: 166px;
+	height: 43px;
+	background-image: url('../bilder/navi_standard_plan.png');
+	float: left;
+}
+#menu_standard_plan:hover, .standard_plan_active
 {
 	background-position: 0 -43px;
 }

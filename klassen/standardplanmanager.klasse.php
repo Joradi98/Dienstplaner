@@ -45,5 +45,16 @@ class StandardPlanManager
 
 	}
 	
+	
+	
+	
+	/* Unter Berücksichtigung aller Faktoren und Funktion, wie Urlaub, ÜST, Krankmeldungen, berechnet diese Funktion, ob der Standard Plan am gegebenen Termin problemlos klappt
+		Hint: ja
+	 */
+	public static function funktioniert_problemlos($termin) {
+		return true;
+	}
+	
+	
 }
 ?>

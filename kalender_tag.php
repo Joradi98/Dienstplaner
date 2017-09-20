@@ -3,6 +3,9 @@
 include('klassen/schicht.klasse.php');
 include('klassen/urlaub.klasse.php');
 include('klassen/kalender.klasse.php');
+include('klassen/StandardPlanManager.klasse.php');
+include('klassen/tag.klasse.php');
+include('klassen/status.klasse.php');
 
 date_default_timezone_set('UTC');
 
@@ -65,9 +68,14 @@ if(isset($_POST['neueSonderschicht']))
 echo '<h2> Details am '.$tag.'.'.$monat.'.'.$jahr.'</h2>';
 
 //Fetche alle Mitarbeiter, die an diesem Tag Dienst haben
-
 $schicht_mitarbeiter = new Schicht_Mitarbeiter();
+#Zuerst schauen, ob etwas außerplanmäßiges eingetragen ist
 $schicht_mitarbeiter_feld = $schicht_mitarbeiter->hole_alle_schicht_mitarbeiter_durch_termin($termin);
+#Falls nicht, nimm den Standardplan
+if (count($schicht_mitarbeiter_feld) <= 0) {
+	$tid = Tag::tag_an_termin($termin)->tid;
+	$schicht_mitarbeiter_feld = StandardPlanManager::hole_alle_schichten_durch_tag($tid);
+}
 
 
 #TODO: Zählt auch MA mehrfach, die mehrfach eingesetzt sind
@@ -77,20 +85,19 @@ echo '<p>Eingetragene Mitarbeiter: '.count($schicht_mitarbeiter_feld).'</p>';
 //Stelle alle MA dieses Tages in einer Tabelle dar
 echo '	<table id="top_left" style="height:100px;">';
 echo '	<tr><th colspan="2" style="vertical-align:top">An diesem Tag eingesetzte Mitarbeiter:</th></tr>';
-foreach($schicht_mitarbeiter_feld as $sma)
+foreach($schicht_mitarbeiter_feld as $ma)
 {	
 	$ma_manager = new Mitarbeiter();
-	$mitarbeiter = $ma_manager->hole_mitarbeiter_durch_id($sma->mid);
-	print $ma->mid;
+	$mitarbeiter = $ma_manager->hole_mitarbeiter_durch_id($ma->mid);
 		
 	#TODO: Was passiert, wenn ein schon eingetragener MA in Urlaub geht?!
 		
 	#$urlaub = new Urlaub();
 	#$urlaub_feld = $urlaub->hole_urlaub_durch_mid($schicht_mitarbeiter->mid);
-    $schicht_mitarbeiter_smid = $sma->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
+    #$schicht_mitarbeiter_smid = $ma->hole_smid_durch_sid_termin_mid($sid, $termin, $mitarbeiter->mid);
 	
-	$beginn = new DateTime($sma->von);
-	$ende = new DateTime($sma->bis);
+	$beginn = new DateTime($ma->von);
+	$ende = new DateTime($ma->bis);
 		
 
 	echo '<tr><td class="tablerow"><input type="checkbox" name = "mid" value="'.$mitarbeiter->mid.'" style="visibility:hidden;" checked />'.$mitarbeiter->name.', '.$mitarbeiter->vname . "</td>";

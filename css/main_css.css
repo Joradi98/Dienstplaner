@@ -484,6 +484,7 @@ tr.hr td, tr.hr td hr
     border-right: 1px solid #ccc;
     overflow:hidden;
     padding:2px;
+
 }
 .tagLink
 {
@@ -524,6 +525,15 @@ tr.hr td, tr.hr td hr
     height: 40px;
     margin-right:5px;
 }
+
+#schiefer_text
+{
+	transform: rotate(-20deg);
+    color: rgba(179, 179, 179, 0.3) ;
+}
+
+
+
 
 #kalenderueberschrift
 {

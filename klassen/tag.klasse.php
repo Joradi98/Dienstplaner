@@ -1,4 +1,7 @@
 <?php
+date_default_timezone_set('UTC');
+
+
 class Tag
 {
 	public $tid;
@@ -26,6 +29,7 @@ class Tag
 		return $tag;
 	}
         
+
     public function naechster() {
 		#Clip to range [1,7]
 		$new_id = $this->tid + 1;
@@ -38,6 +42,16 @@ class Tag
 		$new_id = $this->tid - 1;
 		if ( $new_id < 1) { $new_id = 7; }
 		return Tag::hole_tag_durch_tid($new_id);
+	}
+	
+	//Returns a "Tag" object
+	public static function tag_an_termin($termin) {
+		$weekday = date("w",strtotime($termin));
+		//Der SOnntag wird als 0 kodiert, in der DB aber als 7
+		if ($weekday == 0) {
+			$weekday = 7;
+		}
+		return Tag::hole_tag_durch_tid($weekday);
 	}
 }
 ?>

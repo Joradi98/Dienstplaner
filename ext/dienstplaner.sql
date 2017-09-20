@@ -56,6 +56,24 @@ VALUES
 UNLOCK TABLES;
 
 
+# Export von Tabelle status
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `status`;
+
+CREATE TABLE `status` (
+  `stid` int(11) NOT NULL AUTO_INCREMENT,
+  `bez` varchar(50) NOT NULL,
+  PRIMARY KEY (`stid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO `status` (`stid`, `bez`) VALUES (NULL, 'Fachkraft');
+INSERT INTO `status` (`stid`, `bez`) VALUES (NULL, 'Zweitkraft');
+INSERT INTO `status` (`stid`, `bez`) VALUES (NULL, 'Praktikant');
+
+
+
+
 # Export von Tabelle kalender_schicht
 # ------------------------------------------------------------
 
@@ -123,7 +141,7 @@ CREATE TABLE `mitarbeiter` (
   `max_h_m` int(11) DEFAULT NULL,
   `max_u` int(11) DEFAULT NULL,
   `recht` int(11) NOT NULL,
-  `angemeldet` varchar(60) COLLATE latin1_general_ci NOT NULL,
+  `status` int(11) NOT NULL,
   `pw` varchar(255) COLLATE latin1_general_ci NOT NULL,
   `aktiv` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mid`)
@@ -132,13 +150,13 @@ CREATE TABLE `mitarbeiter` (
 LOCK TABLES `mitarbeiter` WRITE;
 /*!40000 ALTER TABLE `mitarbeiter` DISABLE KEYS */;
 
-INSERT INTO `mitarbeiter` (`mid`, `name`, `vname`, `adresse`, `tel`, `email`, `max_h_d`, `max_h_w`, `max_h_m`, `max_u`, `recht`, `angemeldet`, `pw`, `aktiv`)
+INSERT INTO `mitarbeiter` (`mid`, `name`, `vname`, `adresse`, `tel`, `email`, `max_h_d`, `max_h_w`, `max_h_m`, `max_u`, `recht`, `pw`, `aktiv`, `status`)
 VALUES
-	(1,'Schiller','Martin','',' ','admin@dienstplaner.de',0,0,0,20,1,'','21232f297a57a5a743894a0e4a801fc3',1),
-	(2,'Müller','Bert','','','bert@mueller.de',8,40,200,24,0,'','54ab4c9df68f32840787ae47b1ba9afc',1),
-	(819,'Meier','Susanne','','','susi@meier.com',8,40,200,24,0,'','7a3bbfa99f014f41f2a4b368391c092c',1),
-	(821,'Fischer','Lutz','','','lutz@fischer.com',8,40,200,24,0,'','0a8e3638e3c0deb4e5e49c72286a5b83',1),
-	(828,'Weiler','Emily','','','emily@weiler.de',0,0,0,24,0,'','9e3ba813c8a21b92135e71a60ae10d6e',1);
+	(1,'Schiller','Martin','',' ','admin@dienstplaner.de',0,0,0,20,1,'21232f297a57a5a743894a0e4a801fc3', 1, 1),
+	(2,'Müller','Bert','','','bert@mueller.de',8,40,200,24,0,'54ab4c9df68f32840787ae47b1ba9afc', 1, 2),
+	(3,'Meier','Susanne','','','susi@meier.com',8,40,200,24,0,'7a3bbfa99f014f41f2a4b368391c092c', 1, 1),
+	(4,'Fischer','Lutz','','','lutz@fischer.com',8,40,200,24,0,'0a8e3638e3c0deb4e5e49c72286a5b83', 1, 1),
+	(5,'Weiler','Emily','','','emily@weiler.de',0,0,0,24,0,'9e3ba813c8a21b92135e71a60ae10d6e', 1, 3);
 
 /*!40000 ALTER TABLE `mitarbeiter` ENABLE KEYS */;
 UNLOCK TABLES;

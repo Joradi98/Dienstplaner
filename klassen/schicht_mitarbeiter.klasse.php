@@ -263,7 +263,8 @@ function addDateIntervals() {
 		return $interval;
 
 	}
-
+	
+	
 
  }
 

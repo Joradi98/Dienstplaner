@@ -37,8 +37,11 @@ if(isset($_POST['speichern']))
      /* wenn kein Fehler gefunden wurde, speichern der Angaben */
 	if(count($fehler)=='0')
 	{
+		#Combine the adress from PLZ and street
+		$adress = $_POST['strasse'] . " " . $_POST['plz'];;
+		
 		$pw = md5($_POST['pw']);
-		$mitarbeiter->schreibe_mitarbeiter($_POST['name'], $_POST['vname'], $_POST['adresse'], $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], $pw);
+		$mitarbeiter->schreibe_mitarbeiter($_POST['name'], $_POST['vname'], $adress, $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], 1, $pw, 0);
 		$erfolg = 'Neuer Mitarbeiter erfolgreich erstellt.<br>Damit der Mitarbeiter sich anmelden kann muss er noch aktiviert werden.';
 	}
 }

@@ -6,7 +6,6 @@
 session_start();
 include('inc/config.php');
 include('klassen/mitarbeiter.klasse.php');
-
 /* Wenn Formular abgeschickt wird und der Mitarbeiter sich anmelden will.
  * Mitarbeiter anhand der eingegebenen E-Mail Adresse holen und md5 verschl�sseltes Passwort und Aktivstatus auswerten.
  * Wenn beides erfolgreich Mitarbeiter Objekt in Session speichern f�r sp�tere Rechte und Aktiv abfragen.
@@ -16,11 +15,12 @@ if(isset($_POST['anmelden']))
 	$mitarbeiter = new Mitarbeiter();
 	$mitarbeiter = $mitarbeiter->hole_mitarbeiter_durch_email($_POST['email']);
 
-	if($mitarbeiter && $mitarbeiter->pw==md5($_POST['pw']))
+	if($mitarbeiter && $mitarbeiter->pw==md5($_POST['pw']) )
 	{
 		if($mitarbeiter->aktiv=='1')
 		{
 			$_SESSION['mitarbeiter'] = $mitarbeiter;
+			$fehler = "blablabla";
 			header('Location: index.php');
 		}
 		else

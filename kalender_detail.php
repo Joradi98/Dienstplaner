@@ -38,6 +38,10 @@ $ma_anzahl = $schicht_ma->hole_mitarbeiter_anzahl_durch_id($sid, $tid);
 //Neuer Mitarbeiter in der Schicht
 if(isset($_POST['neuerMA']))
 {
+	$new_mid = $_POST['NeuerMA'];
+	
+	
+	
 	/* pr�fen der maximalen Mitarbeiteranzahl */
 	if((count($_POST)-3)>$ma_anzahl['ma'])
 	{
@@ -47,9 +51,16 @@ if(isset($_POST['neuerMA']))
 	}
 	
 	
-	$new_mid = $_POST['NeuerMA'];
-	$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 	
+	#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
+	$mitarbeiter = Mitarbeiter::hole_mitarbeiter_durch_id($new_mid);
+	if ( $mitarbeiter->ist_verfuegbar_zur_zeit($_POST['termin'], $aktuelle_schicht->ab, $aktuelle_schicht->bis) == false) {
+		$fehler = 'Achtung: Dieser Mitarbeiter ist schon eingesetzt. ';
+		#TODO: SAGEN, WO UND WANN DER MA EINGESETZT IST
+	}
+	
+	
+	$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 	$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($_POST['sid'], $new_mid, $_POST['termin'], $aktuelle_schicht->ab, $aktuelle_schicht->bis);
 
 }
@@ -200,17 +211,16 @@ if(isset($fehler))
 				#Berechen stundenzahl diese woche
 				$stunden = $schicht_mitarbeiter->stunden_diese_woche($mitarbeiter->mid, $termin);
 			
-			
-				#Gehe alle Urlaube des Mitarbeiters durch
-				foreach($urlaub_feld as $urlaub_objekt) {
-					#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
-					if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
-						$test='2';
-						echo '<option disabled value=' . $mitarbeiter->mid . '>' . $mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub </option>';
+				echo "Considerung";
 
-					} 
+				
+				#Berücksichtige den Urlaub
+				if ( $mitarbeiter->ist_im_Urlaub($termin) ) {
+					$test='2';
+					echo '<option disabled value=' . $mitarbeiter->mid . '>' . $mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub </option>';
 				}
-
+				
+				
 
 				#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
 				$einteilungen = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid,$termin,$mitarbeiter->mid);

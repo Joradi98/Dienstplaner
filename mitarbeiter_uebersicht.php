@@ -1,5 +1,7 @@
 <div id="hauptinhalt">
 <?php
+include('klassen/status.klasse.php');
+
 /* wenn angemeldeter Benutzer keine Admin-Rechte hat, nur dessen Mitarbeiterdaten holen
    wenn Benuter Admin-Rechte hat, alle Mitarbeiterdaten holen */
 
@@ -23,72 +25,65 @@ else
 			echo '		<th>Aktiv</th>';
 			echo '		<th>Name</th>';
 			echo '		<th>Abteilung</th>';
-                        echo '		<th>Kommentar</th>';
-			echo '		<th>Rechte</th>';
+			echo '		<th>Kommentar</th>';
+			echo '		<th>Status</th>';
 			echo '		<th colspan="3">&nbsp;</th>';
 			echo '	</tr>';
 
 			foreach($mitarbeiter_feld as $mitarbeiter)  //Tabelleninhalt für jeden Mitarbeiter
 			{
 				echo '<tr class="hr"><td colspan=7><hr></td></tr>';
-                                echo '	<tr>';
-				if($mitarbeiter->aktiv=='1')
-				{
-                                    if($_SESSION['mitarbeiter']->recht=='1')
-                                    {
-                                        echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'" class="ma_aktiv"> </a> </td>';
-                                    }
-                                    else
-                                    {
-                                        echo '		<td class="ma_aktiv"></td>';
-                                    }
+				echo '	<tr>';
+				if($mitarbeiter->aktiv=='1') {
+					
+					if($_SESSION['mitarbeiter']->recht=='1') {
+						echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'" class="ma_aktiv"> </a> </td>';
+					} else {
+						echo '		<td class="ma_aktiv"></td>';
+					}
+					
+				} else {
+					
+					if($_SESSION['mitarbeiter']->recht=='1') {
+						echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'" class="ma_inaktiv"> </a> </td>';
+					} else {
+						echo '		<td class="ma_inaktiv"></td>';
+					}
+					
 				}
-				else
-				{
-                                    if($_SESSION['mitarbeiter']->recht=='1')
-                                    {
-                                        echo '<td> <a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'" class="ma_inaktiv"> </a> </td>';
-                                    }
-                                    else
-                                    {
-                                        echo '		<td class="ma_inaktiv"></td>';
-                                    }
-				}
+				
 				echo '		<td>'.$mitarbeiter->name.', '.$mitarbeiter->vname.'</td>';
 				echo '		<td> x </td>';
-                                echo '		<td> x </td>';
-				if($mitarbeiter->recht=='1')
-				{
+				echo '		<td> x </td>';
+
+				/*if($mitarbeiter->recht=='1') {
 					echo '		<td>Admin</td>';
-				}
-				else
-				{
+				} else {
 					echo '		<td>Mitarbeiter</td>';
-				}
-                    /* Benuter ohne Admin-Rechte haben nur Zugriff auf die bearbeiten-schaltfläche */
-                                echo '		<td style="text-align:right;">';
+				}*/
+				//Zeige den Status des MAs an
+				$status = Status::name_vom_status($mitarbeiter->status);
+				echo '		<td>' .$status.  '</td>';
+                
+				/* Benuter ohne Admin-Rechte haben nur Zugriff auf die bearbeiten-schaltfläche */
+				echo '		<td style="text-align:right;">';
 				/*
-                                if($mitarbeiter->aktiv=='1' && $_SESSION['mitarbeiter']->recht=='1')
-				{
+				if($mitarbeiter->aktiv=='1' && $_SESSION['mitarbeiter']->recht=='1') {
 					echo '<a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'">Deaktivieren</a> | ';
 				}
-				if($mitarbeiter->aktiv=='0' && $_SESSION['mitarbeiter']->recht=='1')
-				{
+				if($mitarbeiter->aktiv=='0' && $_SESSION['mitarbeiter']->recht=='1') {
 					echo '<a href="index.php?seite=mitarbeiter&action=a&mid='.$mitarbeiter->mid.'">Aktivieren</a> | ';
 				}
                                  
                                  */
-                                echo '<a href="index.php?seite=mitarbeiter&sub=details&mid='.$mitarbeiter->mid.'">Details</a>';
-                                if($_SESSION['mitarbeiter']->mid == $mitarbeiter->mid || $_SESSION['mitarbeiter']->recht=='1')
-                                {
+				echo '<a href="index.php?seite=mitarbeiter&sub=details&mid='.$mitarbeiter->mid.'">Details</a>';
+				if($_SESSION['mitarbeiter']->mid == $mitarbeiter->mid || $_SESSION['mitarbeiter']->recht=='1')    {
 					echo ' | <a href="index.php?seite=mitarbeiter&sub=bearbeiten&mid='.$mitarbeiter->mid.'">Bearbeiten</a>';
 				}
-                                if($_SESSION['mitarbeiter']->recht=='1')
-				{
+				
+				if($_SESSION['mitarbeiter']->recht=='1') {
 					echo ' | <a href="index.php?seite=mitarbeiter&action=l&mid='.$mitarbeiter->mid.'" onclick="return confirm(\'Wollen Sie den Mitarbeiter und dessen Schichtzuweisungen wirklich löschen?\')">L&ouml;schen</a>';
-				}
-				else
-				{
+				} else {
 					echo '		<td>&nbsp;</td>';
 				}
 				echo '	</td></tr>';

@@ -95,11 +95,47 @@ if(isset($_POST['timeUpdate'])) {
 	
 }
 
+
+
+
 if(isset($_GET['reset'])) {
 	#Lösche alles auf dem Sonderplan (TABLE schicht_mitarbeiter), dann wird automatisch auf den standardplan zurückgegriffen
 	Schicht_Mitarbeiter::loesche_schicht_mitarbeiter_durch_termin($termin);
 }
 
+
+
+if(isset($_GET['l'])) {
+	#Lösche einen spezifischen MA
+	$von = $_GET['von'];
+	$bis = $_GET['bis'];
+	$mid = $_GET['l'];
+
+	if ( StandardPlanManager::wird_angewendet($termin) == true ) {
+			#Bisher wurde der STD-PLAN verwendet, also INSERT VALUES alles neu im sonderplan
+			echo "noch nicht";
+			#Bisher wurde der STD-PLAN verwendet, also INSERT VALUES alles neu im sonderplan
+			$tid = Tag::tag_an_termin($termin)->tid;
+			$bisherige_ma = StandardPlanManager::hole_alle_schichten_durch_tag($tid);
+
+			foreach ($bisherige_ma as $schicht) {
+				if ($schicht->mid == $mid && $schicht->von == $von && $schicht->bis == $bis) {
+					#Aussetzen, also effektiv löschen für den Benutzer
+				} else {
+					#Einfach übernehmen
+					echo $schicht->von;
+					echo $von;
+
+					Schicht_Mitarbeiter::schreibe_schicht_mitarbeiter(1, $schicht->mid, $termin, $schicht->von, $schicht->bis);
+				}
+								
+			}
+			
+	} else {
+		#Nur ein DELETE im Sonderplan ist erforderlich
+		Schicht_Mitarbeiter::loesche_schicht_mitarbeiter_durch_mid_termin_von_bis($mid, $termin, $von, $bis);
+	}
+}
 
 
 
@@ -153,10 +189,10 @@ echo '<p>Eingetragene Mitarbeiter: '.count($schicht_mitarbeiter_feld).'</p>';
 
 
 # Stelle alle MA dieses Tages in einer Tabelle dar
-# Hier können auch die Zwiten geändert werden
+# Hier können auch die Zeiten geändert werden
 
 echo '	<table id="top_left" style="height:100px;">';
-echo '	<tr><th colspan="2" style="vertical-align:top">An diesem Tag eingesetzte Mitarbeiter:</th></tr>';
+echo '	<tr><th colspan="10" style="vertical-align:top">An diesem Tag eingesetzte Mitarbeiter:</th></tr>';
 foreach($schicht_mitarbeiter_feld as $ma)
 {	
 	$ma_manager = new Mitarbeiter();
@@ -180,10 +216,15 @@ foreach($schicht_mitarbeiter_feld as $ma)
 	#Input: Individual times
 	echo '<td class="tablerow"><input name="von" type="text" class="uhrzeit_text" placeholder= ' . $beginn->format("H:i") . '></td>';
 	echo '<td class="tablerow"><input name="bis" type="text" class="uhrzeit_text" placeholder= ' . $ende->format("H:i") . '></td>';
+	
+	#Button: Remove
+	if ($_SESSION['mitarbeiter']->recht=='1') {
+		echo '<td class="tablerow"> | <a href="index.php?seite=kalender&sub=tag&l='.$ma->mid.'&jahr='.$jahr.'&monat='.$monat.'&tag='.$tag.'&von='.$beginn->format("H:i"). '&bis='. $ende->format("H:i") . '">entfernen</a></td>';
+	}
 
 	//Hide the button, so pressing enter will submit the form
 	echo '<td><input type="submit" name="timeUpdate" value = "" class = "hidden_submit"></td>';
-
+	echo '</tr>';
 	echo '</form>';
 
 }

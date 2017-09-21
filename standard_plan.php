@@ -48,8 +48,8 @@ if(isset($_POST['timeUpdate'])) {
 
 	$caught = 0;
 	try {
-		$test = new DateTime($von);
-		$test = new DateTime($bis);
+		$von = new DateTime($von);
+		$bis = new DateTime($bis);
 
 	} catch (Exception $e) {
 		$fehler = "Bitte geben Sie eine g&uuml;ltige Uhrzeit an";
@@ -57,7 +57,7 @@ if(isset($_POST['timeUpdate'])) {
 	} 
 	
 	if ($caught == 0) {
-		StandardPlanManager::update_zeiten($tid, $_POST['mid'], $von, $bis);
+		StandardPlanManager::update_zeiten($tid, $_POST['mid'], $von->format("H:i"), $bis->format("H:i"));
 	}
 }
 

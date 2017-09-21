@@ -62,7 +62,14 @@ include_once "tag.klasse.php";
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
  	}
-      
+     
+	public static function loesche_schicht_mitarbeiter_durch_mid_termin_von_bis($mid, $termin, $von, $bis)
+ 	{
+		$query = "DELETE FROM schicht_mitarbeiter WHERE mid='".$mid."' AND termin='".$termin. "' AND von='".$von. "' AND bis='".$bis. "'";
+ 		mysql_query($query);
+ 	}
+
+ 
 	/* L�scht den Schicht_Mitarbeiter anhand der Schichtid und dem Termin
  	 * �bergabeparameter:	Schichtid
  	 * 						Termin
@@ -119,7 +126,7 @@ include_once "tag.klasse.php";
 	 {
 	 	$schichten_mitarbeiter_feld = array();
 		$query = "SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."' AND termin='".$termin."'";
-	 	$puffer = mysql_query($query);
+ 	 	$puffer = mysql_query($query);
 	 		
 	 	while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
 	 	{

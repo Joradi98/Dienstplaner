@@ -526,12 +526,15 @@ tr.hr td, tr.hr td hr
     margin-right:5px;
 }
 
-#schiefer_text
+#nach_plan_text
 {
 	transform: rotate(-20deg);
     color: rgba(179, 179, 179, 0.3) ;
 }
-
+#sonder_plan_text
+{
+    color: rgb(97, 211, 141) ;
+}
 
 
 

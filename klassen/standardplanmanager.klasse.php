@@ -55,6 +55,22 @@ class StandardPlanManager
 		return true;
 	}
 	
+	/* 
+	* Beschreibt, ob der Standardplan an gegebenem Termin agewendet wird, oder ob auf schichtmitarbeiter als Sonderplan zurückgegriffen wird.
+	*/
+	public static function wird_angewendet($termin) {
+		$schicht_feld = array();
+		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE termin='".$termin."'");
+		
+		#Keine sonderschicht gefunden, also wird standard angewendet
+		if ( mysql_num_rows($puffer) == 0 ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 }
+
+
 ?>

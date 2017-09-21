@@ -74,11 +74,20 @@ foreach($kalender_feld as $woche)
 			#Für den aktuellen Monat
 			$kalender_termin = $kalender->jahr.'-'.$kalender->monat.'-'.$tag;
 			
-			if ( StandardPlanManager::funktioniert_problemlos($kalender_termin) ) {
-				echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;"><span>'.'<a href="index.php?seite=kalender&sub=tag&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'" style="color:#150e7e;">'.$tag.'</a>'.'</span>';
+			
+			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;"><span>'.'<a href="index.php?seite=kalender&sub=tag&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'" style="color:#150e7e;">'.$tag.'</a>'.'</span>';
+			
+			if ( StandardPlanManager::wird_angewendet($kalender_termin) ) {
 				
-				echo '<br><div id="schiefer_text">Nach Plan</div>';
+				if ( StandardPlanManager::funktioniert_problemlos($kalender_termin) ) {
+					echo '<br><div id="nach_plan_text">Nach Plan</div>';
+				}			
+			
+			} else {
+				echo '<br><div id="sonder_plan_text">Sonderplan</div>';
 			}
+			
+			
 			
 			
 			echo '</td>';

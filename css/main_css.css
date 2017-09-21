@@ -186,6 +186,11 @@ hr
     line-height: 28px;
 
 }
+#submenu #right_link
+{
+    float: right;
+}
+
 #submenu a
 {
     font-size:12px;

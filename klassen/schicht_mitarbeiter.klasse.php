@@ -71,7 +71,16 @@ function addDateIntervals() {
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE sid='".$sid."' AND termin='".$termin."'");
  	}
-        
+      
+	/* L�scht den Schicht_Mitarbeiter anhand der Schichtid und dem Termin
+ 	 * �bergabeparameter:	Schichtid
+ 	 * 						Termin
+ 	 */
+ 	public static function loesche_schicht_mitarbeiter_durch_termin( $termin)
+ 	{
+ 		mysql_query("DELETE FROM schicht_mitarbeiter WHERE termin='".$termin."'");
+ 	}	
+  
     public static function loesche_schicht_mitarbeiter_durch_smid($smid)
  	{
  		mysql_query("DELETE FROM schicht_mitarbeiter WHERE smid='".$smid."'");

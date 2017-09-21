@@ -1,3 +1,4 @@
+
 <?php
 
 include_once('klassen/tag.klasse.php');
@@ -5,6 +6,10 @@ include_once('klassen/status.klasse.php');
 include_once('klassen/StandardPlanManager.klasse.php');
 
 date_default_timezone_set('UTC');
+
+
+
+
 
 
 #Fetche alle Informatino aus der URL und mache sie publicly accessible
@@ -198,6 +203,7 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 
 
 <div id="monats_stats">
+<a id="hideButton" href="javascript:toggleTable();">Ausblenden</a>
 <table id="tagesplan"> 
 <?php
 #Erstelle "Dienstplan" Tabelle
@@ -250,6 +256,19 @@ foreach ($alle_ma as $mitarbeiter) {
    
 </table>
 </div>
+
+
+<script>
+
+function toggleTable() {
+    var lTable = document.getElementById("tagesplan");
+	var hideButton = document.getElementById("hideButton");
+
+    lTable.style.display = (lTable.style.display != "none") ? "none" : "table";
+	hideButton.text = (lTable.style.display != "none") ? "Ausblenden" : "Einblenden";
+}
+
+</script>
 
 
 

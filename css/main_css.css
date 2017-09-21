@@ -679,12 +679,14 @@ input{
 .feld, select
 {
 	border-top: 1px solid #ababab;
-        border-left: 1px solid #ababab;
-        border-right: 1px solid #e3e9ef;
-        border-bottom: 1px solid #e3e9ef;
-	padding: 1px 3px 2px;
-        color: #666;
+    border-left: 1px solid #ababab;
+    border-right: 1px solid #e3e9ef;
+    border-bottom: 1px solid #e3e9ef;
+	padding: 0px;
+    margin: 0px;
+    color: #666;
 }
+
 
 .uhrzeit_text {
     width: 40px;

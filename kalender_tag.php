@@ -29,18 +29,49 @@ else
 
 //FORM: Neue SonderSchicht wurde angelegt
 if(isset($_POST['neueSonderschicht'])) {
-	/*$schicht_verwaltung = new Schicht();
-	$schicht_mitarbeiter = new Schicht_Mitarbeiter();
+	#echo "Noch passiert hier nichts, check back soon(TM)";
 
-	$new_mid = $_POST['neueSonderschicht'];
+	$von = $_POST['von'];
+	$bis = $_POST['bis'];
+	$mid = $_POST['mid'];
+	$tid = Tag::tag_an_termin($termin)->tid;
+	$mitarbeiter = Mitarbeiter::hole_mitarbeiter_durch_id($mid);
+	$success = true;
+
+	//Varify input
+	if (! isset($_POST['von']) || strlen($_POST['von']) == 0){ $von = $alt_beginn; }
+	if (! isset($_POST['bis']) || strlen($_POST['bis']) == 0 ){ $bis = $alt_ende; }
+
+	try {
+		$von = new DateTime($von);
+		$bis = new DateTime($bis);
+	} catch (Exception $e) {
+		$fehler = "Bitte geben Sie eine g&uuml;ltige Uhrzeit an";
+		$success = false;
+	} 
+
+
+	if ( $mitarbeiter->wird_eingesetzt_am_termin($termin) ) {
+		$fehler = "Dieser Mitarbeiter wird schon eingesetzt. Sie können ihn nicht noch einmal hinzufügen.";
+		$success = false;
+	}
+
+	if ( StandardPlanManager::wird_angewendet($termin) == true && $success) {
+		#Bisher wurde der STD-PLAN verwendet, also INSERT VALUES alles neu im sonderplan
+		$tid = Tag::tag_an_termin($termin)->tid;
+		$bisherige_ma = StandardPlanManager::hole_alle_schichten_durch_tag($tid);
+		
+		foreach ($bisherige_ma as $schicht) {
+			#Einfach übernehmen
+			Schicht_Mitarbeiter::schreibe_schicht_mitarbeiter(1, $schicht->mid, $termin, $schicht->von, $schicht->bis);
+		}
+
+	}
 	
-	//TODO: lenny face
-	$sonder_sid = $schicht_verwaltung->sonderschicht_sid();
-	$von = "00:00";
-	$bis = "00:00";
-
-	$schicht_mitarbeiter->schreibe_schicht_mitarbeiter($sonder_sid, $_POST['mid'], $_POST['termin'], $von, $bis);*/
-	echo "Noch passiert hier nichts, check back soon(TM)";
+	if ($success) {
+		#Und dann noch ergänzen INSERT im Sonderplans ist erforderlich
+		Schicht_Mitarbeiter::schreibe_schicht_mitarbeiter(1,$mid,$termin,$von->format("H:i"),$bis->format("H:i"));
+	}	
 	
 }
 
@@ -113,7 +144,6 @@ if(isset($_GET['l'])) {
 
 	if ( StandardPlanManager::wird_angewendet($termin) == true ) {
 			#Bisher wurde der STD-PLAN verwendet, also INSERT VALUES alles neu im sonderplan
-			echo "noch nicht";
 			#Bisher wurde der STD-PLAN verwendet, also INSERT VALUES alles neu im sonderplan
 			$tid = Tag::tag_an_termin($termin)->tid;
 			$bisherige_ma = StandardPlanManager::hole_alle_schichten_durch_tag($tid);
@@ -123,9 +153,6 @@ if(isset($_GET['l'])) {
 					#Aussetzen, also effektiv löschen für den Benutzer
 				} else {
 					#Einfach übernehmen
-					echo $schicht->von;
-					echo $von;
-
 					Schicht_Mitarbeiter::schreibe_schicht_mitarbeiter(1, $schicht->mid, $termin, $schicht->von, $schicht->bis);
 				}
 								
@@ -236,7 +263,7 @@ echo '</table><table id="top_right">';
 //Admins können MA auf der rechten Seite hinzufügen
 if($_SESSION['mitarbeiter']->recht=='1') {
 	echo '<form action="index.php?seite=kalender&sub=tag&jahr=' . $jahr . '&monat=' . $monat . '&tag=' . $tag . '" method="post">';
-    echo '<tr><th colspan="2">Sonderschicht hinzuf&uuml;gen</th></tr>';
+    echo '<tr><th colspan="10">Sonderschicht hinzuf&uuml;gen</th></tr>';
 	
     echo '<tr><td><select name="mid">';
       
@@ -279,13 +306,17 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 }
 
 ?>
+</select></td></tr>
+<tr>
+	<td><input type="text" name="von" placeholder="Uhrzeit: Von" required >
+	<input type="text" name="bis" placeholder="Uhrzeit: Bis" required ></td>
+</tr>
 <tr>
 	<td>
 		<input type="hidden" name="termin" value="<?php echo $jahr.'-'.$monat.'-'.$tag; ?>">
 		<input class="knopf_erstellen" type="submit" name="neueSonderschicht" value=" ">
 	</td>
 </tr>
-
 </table>
-
+</form>
 </div>

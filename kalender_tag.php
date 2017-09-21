@@ -267,8 +267,7 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 
 
 		#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
-		$einteilungen = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid,$termin,$mitarbeiter->mid);
-		if (count($einteilungen) >= 2) {
+		if ( $mitarbeiter->wird_eingesetzt_am_termin($termin) ) {
 			echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden.'h in dieser Woche</option>';
 		} else 	if($test=='0') {
             echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden.'h in dieser Woche</option>';

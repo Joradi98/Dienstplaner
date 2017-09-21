@@ -174,6 +174,7 @@ class Mitarbeiter
 		return true;
 	 }
 
+
 	/*	Gibt an, wie viele Stunden der MA am Termin arbeitet. Pausen nicht berŸcksichtigt
 	*	Returns: DateInterval
 	*/
@@ -255,6 +256,28 @@ class Mitarbeiter
 		return $total_hours . ":" . $interval->i;
 
 	}
+
+	/*
+	*	Gibt an, ob der MA am gegebenen Termin (str) schon eingesetzt ist.
+	*/
+	public function wird_eingesetzt_am_termin($termin) {
+		
+		if (StandardPlanManager::wird_angewendet($termin)) {
+			#Schaue im Std-plan
+			$tid = Tag::tag_an_termin($termin)->tid;
+			$query = "SELECT * FROM standard_plan WHERE tid=".$tid. " AND mid=" . $this->mid;
+			$puffer = mysql_query($query);
+			return ( mysql_num_rows($puffer) ) != 0;
+				
+		} else {
+			$query = "SELECT * FROM schicht_mitarbeiter WHERE termin='".$termin. "' AND mid=" . $this->mid;
+			$puffer = mysql_query($query);
+			return ( mysql_num_rows($puffer) ) != 0;
+
+		}
+		return true;
+	}
+
 
 
 }

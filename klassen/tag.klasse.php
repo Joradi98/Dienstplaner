@@ -64,7 +64,7 @@ class Tag
 		return Tag::hole_tag_durch_tid($new_id);
 	}
 	
-	//Returns a "Tag" object
+	//Returns a "Tag" object mittels Termin (str)
 	public static function tag_an_termin($termin) {
 		$weekday = date("w",strtotime($termin));
 		//Der SOnntag wird als 0 kodiert, in der DB aber als 7

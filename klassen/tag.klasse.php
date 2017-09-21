@@ -40,7 +40,7 @@ class Tag
 		$query = "SELECT * FROM tag WHERE tid='".$tid."'";
 		$puffer = mysql_query($query);
 		$tag = new Tag();
-		while($objekt = mysql_fetch_object($puffer, 'Status', array('tid', 'name')))
+		while($objekt = mysql_fetch_object($puffer, 'Tag', array('tid', 'name')))
 		{
 			$tag->tid = $objekt->tid;
 			$tag->name = $objekt->name;

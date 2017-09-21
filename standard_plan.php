@@ -2,7 +2,7 @@
 
 include_once('klassen/tag.klasse.php');
 include_once('klassen/status.klasse.php');
-include_once('klassen/standardplanmanager.klasse.php');
+include_once('klassen/StandardPlanManager.klasse.php');
 
 date_default_timezone_set('UTC');
 

@@ -212,8 +212,7 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
 		$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 		#Berechen stundenzahl diese woche
-		$stunden = $schicht_mitarbeiter->stunden_diese_woche($mitarbeiter->mid, $termin);
-			
+		$stunden = $mitarbeiter->brutto_workload_diese_woche($termin);
 			
 		#Gehe alle Urlaube des Mitarbeiters durch
 		foreach($urlaub_feld as $urlaub_objekt) {
@@ -229,9 +228,9 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 		#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden
 		$einteilungen = $schicht_mitarbeiter->hole_smid_durch_sid_termin_mid($sid,$termin,$mitarbeiter->mid);
 		if (count($einteilungen) >= 2) {
-			echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden->format("%H:%I").'h in dieser Woche</option>';
+			echo '<option disabled value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden.'h in dieser Woche</option>';
 		} else 	if($test=='0') {
-            echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden->format("%H:%I").'h in dieser Woche</option>';
+            echo '<option value="'.$mitarbeiter->mid.'">'.$mitarbeiter->name.', '.$mitarbeiter->vname.'&ensp; '.$stunden.'h in dieser Woche</option>';
 		}
               
 	}

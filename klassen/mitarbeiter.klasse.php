@@ -174,21 +174,87 @@ class Mitarbeiter
 		return true;
 	 }
 
-	//Gibt an, wie viele Stunden der MA am Termin arbeitet. Pausen nicht berŸcksichtigt
-	public function brutto_stunden_am_tag($termin) {
+	/*	Gibt an, wie viele Stunden der MA am Termin arbeitet. Pausen nicht berŸcksichtigt
+	*	Returns: DateInterval
+	*/
+	public function brutto_stunden_am_termin($termin) {
 		$tag = Tag::tag_an_termin($termin);
+		$interval = new DateInterval("P0Y");
 		if (StandardPlanManager::wird_angewendet($termin)) {
 			#Nach Std-plan berechnen
 			$schichten = StandardPlanManager::hole_alle_schichten_durch_ma_tid($this->mid, $tag->tid);
-			$interval = new DateInterval("P0Y");
 			
 		} else {
 			#nach sonderplan (schicht_mitarbeiter) berechnen
-			
-			
+			$schichten = Schicht_Mitarbeiter::hole_alle_schicht_mitarbeiter_durch_mid_termin($this->mid, $termin);
 		}
+		
+		#Careful here! Although both arrays are called $schichten, they contain objects of different classes
+		#TODO: Merge these classes to one common 'schicht'-class. Guess this is No. >9000 in cleaning up this project
+		foreach ($schichten as $schicht) {
+			$ab = new DateTime($schicht->von);
+			$bis = new DateTime($schicht->bis);
+			
+			$spanne = $ab->diff($bis);
+			$interval = addDateIntervals($interval, $spanne);
+		}
+		#echo $interval->format("%H:%I");
+		return $interval;
+
+		
+		
 	}
 
+
+	/*
+	Im Gegensatz zu stunden_diese_woche liefert diese Funktion direkt einen String zurŸck. 
+	*/
+	public function brutto_workload_diese_woche($termin) {
+			
+		$kalender = new Kalender();
+		#Begrenzende Tage der Woche
+		$montag = $kalender->wochenAnfang($termin);
+		$sonntag = $kalender->wochenEnde($termin);
+		$next_montag = date('Y-m-d',(strtotime ( '+ 1 day' , strtotime ( $sonntag) ) ));
+
+		$interval = new DateInterval("P0Y"); //0 years
+
+		#Nice while-statement :P
+		while ($montag != $next_montag) {
+			$brutto_tag = $this->brutto_stunden_am_termin($montag);
+				
+			#echo $brutto_tag->format("%H:%i") . "am " . $montag . "##";
+			$interval = addDateIntervals($interval, $brutto_tag);
+			$montag = date('Y-m-d',(strtotime ( '+ 1 day' , strtotime ( $montag) ) ));
+		}
+			
+		$total_hours = $interval->d * 24 + $interval->h;
+		return $total_hours . ":" . $interval->i;
+	}
+		
+
+	/*
+	Im Gegensatz zu stunden_diesen_monat liefert diese Funktion direkt einen String zurŸck. 
+	*/
+	public function brutto_workload_diesen_monat($termin) {
+					
+		$kalender = new Kalender();
+		#Begrenzende Tage der Woche
+		$datum = new DateTime($termin);
+		$erster = new DateTime($datum->format("Y-m-01")) ;
+		$interval = new DateInterval("P0Y"); //0 years
+		
+		#Solagen wir uns im gleichen Monat bewegen
+		while ($erster->format('Y-m') == $datum->format('Y-m')) {
+			$brutto_tag = $this->brutto_stunden_am_termin($erster->format("Y-m-d"));
+			#echo $brutto_tag->format("%H:%i") . "am " . $erster->format('Y-m-d') . "##";
+			$interval = addDateIntervals($interval, $brutto_tag);
+			$erster = $erster->modify("+1 day") ;
+		}
+		$total_hours = $interval->d * 24 + $interval->h;
+		return $total_hours . ":" . $interval->i;
+
+	}
 
 
 }

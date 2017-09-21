@@ -118,7 +118,8 @@ include_once "tag.klasse.php";
 	 public static function hole_alle_schicht_mitarbeiter_durch_mid_termin($mid,$termin)
 	 {
 	 	$schichten_mitarbeiter_feld = array();
-	 	$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."' AND termin='".$termin."'");
+		$query = "SELECT * FROM schicht_mitarbeiter WHERE mid='".$mid."' AND termin='".$termin."'";
+	 	$puffer = mysql_query($query);
 	 		
 	 	while($mitarbeiter_schicht_objekt = mysql_fetch_object($puffer, 'Schicht_Mitarbeiter', array('smid', 'sid', 'mid', 'termin', 'von', 'bis')))
 	 	{
@@ -215,8 +216,11 @@ include_once "tag.klasse.php";
 	}
 		
 		
-		
+	/*
+	Im Gegensatz zu brutto_stunden_am_termin liefert diese Funktion direkt einen String zurück. 
+	*/
 	public static function stunden_diese_woche($mid,$termin) {
+		echo "ICH BIN DEPRECATED stunden_diese_woche";
 		$verwalter = new Schicht_Mitarbeiter();
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
 		$alle_schichten = $verwalter->hole_schicht_mitarbeiter_durch_mid($mid);
@@ -224,14 +228,10 @@ include_once "tag.klasse.php";
 		#Begrenzende Tage der Woche
 		$montag = $kalender->wochenAnfang($termin);
 		$sonntag = $kalender->wochenEnde($termin);
-		
 		$interval = new DateInterval("P0Y"); //0 years
 		foreach($alle_schichten as $schicht) {
 			#Schaue nur die Schichten innerhalb der Woche an
 			if ($schicht->termin >= $montag && $schicht->termin <= $sonntag) {
-				echo "Hier das wetter";
-				echo $schicht->sid;
-				
 				$ab = new DateTime($schicht->von);
 				$bis = new DateTime($schicht->bis);
 				
@@ -240,10 +240,17 @@ include_once "tag.klasse.php";
 			}
 		}
 		return $interval;
+		
 
 	}
 	
+	
+	
+	
+	
 	public static function stunden_diesen_monat($mid, $termin) {
+		echo "ICH BIN DEPRECATED stunden_diesen_monat";
+
 		$verwalter = new Schicht_Mitarbeiter();
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
 		$alle_schichten = $verwalter->hole_schicht_mitarbeiter_durch_mid($mid);

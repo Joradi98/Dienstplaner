@@ -116,12 +116,11 @@ $alle = $verwaltung->hole_alle_mitarbeiter();
 	</tr>
   
 	<?php
-		$sm_verwaltung = new Schicht_Mitarbeiter();
 		foreach ($alle as $mitarbeiter) {
 			echo "<tr> <td>" . $mitarbeiter->name . ", " . $mitarbeiter->vname . "</td>";
-			$stunden = $sm_verwaltung->stunden_diesen_monat($mitarbeiter->mid, $termin);
+			$stunden = $mitarbeiter->brutto_workload_diesen_monat($termin);
 
-			echo '<td>' . $stunden->format("%H:%I") . "</td> ";
+			echo '<td>' . $stunden. "</td> ";
 			echo "</tr>";
 			
 		}

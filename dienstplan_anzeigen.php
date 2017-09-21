@@ -3,11 +3,11 @@ date_default_timezone_set('UTC');
 session_start();
 /* Prüfen, ob Benutzer angemeldet ist und somit das Recht hat die Seite zu sehen, sonst umleiten auf anmelden.php */
 if($_SESSION['mitarbeiter']) {
-	include('inc/config.php');
+	include_once('inc/config.php');
 	/* Mitarbeiterklasse einbinden */
-	include('klassen/mitarbeiter.klasse.php');
-	include('klassen/dienstplan.klasse.php');
-	include('klassen/schicht.klasse.php');
+	include_once('klassen/mitarbeiter.klasse.php');
+	include_once('klassen/dienstplan.klasse.php');
+	include_once('klassen/schicht.klasse.php');
 	$mitarbeiter = new Mitarbeiter();
 	$dienstplan_anzeige = new Dienstplan();
 	$schichtlegende = new Schicht();	

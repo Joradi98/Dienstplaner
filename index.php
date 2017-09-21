@@ -5,8 +5,8 @@
 /* Mitarbeiterklasse includieren, weil sie in der Session die danach gestartet wird ben�tigt wird.
  * Testen ob Mitarbeiterobjekt gesetzt wurde, d.h. Recht hat die Seiten einzusehen, ansonsten auf anmelden.php weiterleiten.
  */
-include('inc/config.php');
-include('klassen/mitarbeiter.klasse.php');
+include_once('inc/config.php');
+include_once('klassen/mitarbeiter.klasse.php');
 session_start();
 if($_SESSION['mitarbeiter'])
 {
@@ -55,7 +55,7 @@ if(isset($_GET['seite'])) {
 <a href="index.php" id="logo"></a>
 
 <?php
-include('inc/hilfe.php');
+include_once('inc/hilfe.php');
 ?>
 	<div id="menu">
 		<a href="index.php?seite=mitarbeiter" id="menu_mitarbeiter" class="menu_objekt <?php if($mainactiv=='mitarbeiter') echo 'mitarbeiter_active'; ?>"><div class="menu_text" id="menu_text_mitarbeiter"> </div></a>
@@ -90,20 +90,20 @@ if(isset($_GET['seite']))
 {
 	switch($_GET['seite'])
 	{
-        case 'mitarbeiter': include('mitarbeiter.php'); break;
-	    case 'konfig': include('konfig.php'); break;
-	    case 'kalender': include('kalender.php'); break;
-        case 'schicht_mitarbeiter': include('schicht_mitarbeiter.php'); break;
-	    case 'dienstplan': include('dienstplan.php'); break;
-	    case 'standard_plan': include('standard_plan.php'); break;
+        case 'mitarbeiter': include_once('mitarbeiter.php'); break;
+	    case 'konfig': include_once('konfig.php'); break;
+	    case 'kalender': include_once('kalender.php'); break;
+        case 'schicht_mitarbeiter': include_once('schicht_mitarbeiter.php'); break;
+	    case 'dienstplan': include_once('dienstplan.php'); break;
+	    case 'standard_plan': include_once('standard_plan.php'); break;
 
 	    default: break;
 	}
 } else {
-	include('mitarbeiter.php');
+	include_once('mitarbeiter.php');
 }
 
-include('inc/footer.php');
+include_once('inc/footer.php');
 
 #Von ganz oben
 } else {

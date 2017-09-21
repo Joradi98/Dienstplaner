@@ -1,7 +1,7 @@
 <?php
-include('klassen/kalender.klasse.php');
-include('klassen/schicht.klasse.php');
-include('klassen/StandardPlanManager.klasse.php');
+include_once('klassen/kalender.klasse.php');
+include_once('klassen/schicht.klasse.php');
+include_once('klassen/StandardPlanManager.klasse.php');
 
 date_default_timezone_set('UTC');
 

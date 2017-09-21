@@ -1,16 +1,7 @@
 <?php
 
-#Helper functinos
-function addDateIntervals() {
-	$reference = new DateTimeImmutable;
-	$endTime = clone $reference;
+include_once "tag.klasse.php";
 
-	foreach (func_get_args() as $dateInterval) {
-	   	$endTime = $endTime->add($dateInterval);
-	}
-	
-	return $reference->diff($endTime);	
-}
 
 
 
@@ -143,6 +134,7 @@ function addDateIntervals() {
  	 */
  	public static function hole_alle_schicht_mitarbeiter_durch_termin($termin)
  	{
+	
  		$schichten_mitarbeiter_feld = array();
  		$puffer = mysql_query("SELECT * FROM schicht_mitarbeiter WHERE termin='".$termin."'");
  		
@@ -221,6 +213,8 @@ function addDateIntervals() {
 		$query = "UPDATE schicht_mitarbeiter SET von='" .  $von . "'" . " , bis='" . $bis . "'" . " WHERE sid='".$sid."' AND termin='".$termin."' AND mid='".$mid."'";
 		mysql_query($query);
 	}
+		
+		
 		
 	public static function stunden_diese_woche($mid,$termin) {
 		$verwalter = new Schicht_Mitarbeiter();

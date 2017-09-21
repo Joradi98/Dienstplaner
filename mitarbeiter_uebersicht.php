@@ -1,6 +1,6 @@
 <div id="hauptinhalt">
 <?php
-include('klassen/status.klasse.php');
+include_once('klassen/status.klasse.php');
 
 /* wenn angemeldeter Benutzer keine Admin-Rechte hat, nur dessen Mitarbeiterdaten holen
    wenn Benuter Admin-Rechte hat, alle Mitarbeiterdaten holen */

@@ -1,5 +1,5 @@
 <?php
-include ('klassen/schicht_mitarbeiter.klasse.php');
+include_once('klassen/schicht_mitarbeiter.klasse.php');
 
 $alle_farben = array('d6b2d4', 'b3b2c6', 'b2d4d3', 'b6d0b2', 'd0d0b2', 'd5c6b2', 'd2b2b2',
                      'e6b2e4', 'b4b2e0', 'b2eaea', 'bbeab2', 'e4e2b2', 'ecd7b2', 'ecb2b2',

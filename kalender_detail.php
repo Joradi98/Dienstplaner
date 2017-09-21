@@ -1,8 +1,8 @@
 <?php
 /* Klassen Schicht und Urlaub einbinden */
-include('klassen/schicht.klasse.php');
-include('klassen/urlaub.klasse.php');
-include('klassen/kalender.klasse.php');
+include_once('klassen/schicht.klasse.php');
+include_once('klassen/urlaub.klasse.php');
+include_once('klassen/kalender.klasse.php');
 
 date_default_timezone_set('UTC');
 

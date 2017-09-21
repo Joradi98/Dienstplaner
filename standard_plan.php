@@ -1,8 +1,9 @@
 <?php
 
-include('klassen/tag.klasse.php');
-include('klassen/status.klasse.php');
-include('klassen/standardplanmanager.klasse.php');
+include_once('klassen/tag.klasse.php');
+include_once('klassen/status.klasse.php');
+include_once('klassen/standardplanmanager.klasse.php');
+
 date_default_timezone_set('UTC');
 
 

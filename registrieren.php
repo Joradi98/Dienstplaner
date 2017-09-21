@@ -1,8 +1,8 @@
 <?php
-include('inc/config.php');
+include_once('inc/config.php');
 
 /* Klasse Mitarbeiter einbinden */
-include('klassen/mitarbeiter.klasse.php');
+include_once('klassen/mitarbeiter.klasse.php');
 
 /* Eingaben auf Fehler pr�fen */
 function testen()

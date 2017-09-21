@@ -27,7 +27,7 @@ else
 
 <?php
 /* Klasse Schicht einbinden */
-include('klassen/schicht.klasse.php');
+include_once('klassen/schicht.klasse.php');
 
 $mitarbeiter = new Mitarbeiter();
 $mitarbeiter_feld = array();
@@ -49,7 +49,7 @@ if(isset($_GET['action']) && $_GET['action']=='a')
 if(isset($_GET['action']) && $_GET['action']=='l')
 {
     /* Klasse Schicht_Mitarbeiter einbinden */
-    include('klassen/schicht_mitarbeiter.klasse.php');
+    include_once('klassen/schicht_mitarbeiter.klasse.php');
     $mid = $_GET['mid'];
 
     /* ausgew�hlten Mitarbeiter l�schen */
@@ -64,17 +64,17 @@ if(isset($_GET['sub']))
 {
 	switch($_GET['sub'])
 	{
-            case 'uebersicht': include('schicht_uebersicht.php'); break;
-            case 'neu': include('schicht_neu.php'); break;
-            case 'bearbeiten': include('schicht_bearbeiten.php'); break;
-            case 'arbeitstage': include('arbeitstage.php'); break;
-            case 'belegung': include('schicht_belegung.php'); break;
+            case 'uebersicht': include_once('schicht_uebersicht.php'); break;
+            case 'neu': include_once('schicht_neu.php'); break;
+            case 'bearbeiten': include_once('schicht_bearbeiten.php'); break;
+            case 'arbeitstage': include_once('arbeitstage.php'); break;
+            case 'belegung': include_once('schicht_belegung.php'); break;
 
 	    default: break;
 	}
 }
 else
 {
-	include('schicht_uebersicht.php');
+	include_once('schicht_uebersicht.php');
 }
 ?>

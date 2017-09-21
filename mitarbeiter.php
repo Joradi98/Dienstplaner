@@ -52,7 +52,7 @@ if(isset($_GET['action']) && $_GET['action']=='a')
 if(isset($_GET['action']) && $_GET['action']=='l')
 {
     /* Klasse Schicht_Mitarbeiter einbinden */
-    include('klassen/schicht_mitarbeiter.klasse.php');
+    include_once('klassen/schicht_mitarbeiter.klasse.php');
     $mid = $_GET['mid'];
 
     /* ausgew�hlten Mitarbeiter l�schen */
@@ -67,16 +67,16 @@ if(isset($_GET['sub']))
 {
 	switch($_GET['sub'])
 	{
-            case 'uebersicht': include('mitarbeiter_uebersicht.php'); break;
-            case 'details': include('mitarbeiter_details.php'); break;
-            case 'neu': include('mitarbeiter_neu.php'); break;
-            case 'bearbeiten': include('mitarbeiter_bearbeiten.php'); break;
-            case 'urlaub': include('mitarbeiter_urlaub.php'); break;
+            case 'uebersicht': include_once('mitarbeiter_uebersicht.php'); break;
+            case 'details': include_once('mitarbeiter_details.php'); break;
+            case 'neu': include_once('mitarbeiter_neu.php'); break;
+            case 'bearbeiten': include_once('mitarbeiter_bearbeiten.php'); break;
+            case 'urlaub': include_once('mitarbeiter_urlaub.php'); break;
 
 	    default: break;
 	}
 }
 else
 {
-	include('mitarbeiter_uebersicht.php');
+	include_once('mitarbeiter_uebersicht.php');
 }

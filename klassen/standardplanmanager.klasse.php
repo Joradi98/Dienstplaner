@@ -23,7 +23,17 @@ class StandardPlanManager
 		}
 		return $schicht_feld;
 	}
-
+	
+	public static function hole_alle_schichten_durch_ma_tid($mid, $tid) {
+			$schicht_feld = array();
+			$puffer = mysql_query("SELECT * FROM standard_plan WHERE tid='".$tid."' AND mid='".$mid."'");
+		 		
+			while($objekt = mysql_fetch_object($puffer, 'StandardPlanManager', array('tmid','tid', 'mid', 'von', 'bis')))
+			{
+				$schicht_feld[] = $objekt;
+			}
+			return $schicht_feld;
+	}
 	
 	
 	

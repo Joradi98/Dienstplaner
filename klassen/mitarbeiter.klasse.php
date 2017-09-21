@@ -1,4 +1,8 @@
 <?php
+
+include_once "tag.klasse.php";
+include_once "StandardPlanManager.klasse.php";
+
 class Mitarbeiter
 {
 	public $mid;
@@ -169,6 +173,22 @@ class Mitarbeiter
 		#Falls nichts gefunden wurde, ist der MA verfŸbar
 		return true;
 	 }
+
+	//Gibt an, wie viele Stunden der MA am Termin arbeitet. Pausen nicht berŸcksichtigt
+	public function brutto_stunden_am_tag($termin) {
+		$tag = Tag::tag_an_termin($termin);
+		if (StandardPlanManager::wird_angewendet($termin)) {
+			#Nach Std-plan berechnen
+			$schichten = StandardPlanManager::hole_alle_schichten_durch_ma_tid($this->mid, $tag->tid);
+			$interval = new DateInterval("P0Y");
+			
+		} else {
+			#nach sonderplan (schicht_mitarbeiter) berechnen
+			
+			
+		}
+	}
+
 
 
 }

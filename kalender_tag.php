@@ -1,11 +1,11 @@
 <?php
 /* Klassen Schicht und Urlaub einbinden */
-include('klassen/schicht.klasse.php');
-include('klassen/urlaub.klasse.php');
-include('klassen/kalender.klasse.php');
-include('klassen/StandardPlanManager.klasse.php');
-include('klassen/tag.klasse.php');
-include('klassen/status.klasse.php');
+include_once('klassen/schicht.klasse.php');
+include_once('klassen/urlaub.klasse.php');
+include_once('klassen/kalender.klasse.php');
+include_once('klassen/StandardPlanManager.klasse.php');
+include_once('klassen/tag.klasse.php');
+include_once('klassen/status.klasse.php');
 
 date_default_timezone_set('UTC');
 

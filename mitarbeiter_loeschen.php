@@ -1,6 +1,6 @@
 <?php
 /* Klasse Schicht_Mitarbeiter einbinden */
-include('klassen/schicht_mitarbeiter.klasse.php');
+include_once('klassen/schicht_mitarbeiter.klasse.php');
 $mid = $_GET['mid'];
 
 /* ausgewählten Mitarbeiter löschen */

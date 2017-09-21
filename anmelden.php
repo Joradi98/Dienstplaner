@@ -4,8 +4,8 @@
  * Mitarbeiterklasse includieren.
  */
 session_start();
-include('inc/config.php');
-include('klassen/mitarbeiter.klasse.php');
+include_once('inc/config.php');
+include_once('klassen/mitarbeiter.klasse.php');
 /* Wenn Formular abgeschickt wird und der Mitarbeiter sich anmelden will.
  * Mitarbeiter anhand der eingegebenen E-Mail Adresse holen und md5 verschl�sseltes Passwort und Aktivstatus auswerten.
  * Wenn beides erfolgreich Mitarbeiter Objekt in Session speichern f�r sp�tere Rechte und Aktiv abfragen.

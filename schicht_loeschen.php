@@ -1,6 +1,6 @@
 <?php
 /* Klasse Schicht einbinden */
-include('klassen/schicht.klasse.php');
+include_once('klassen/schicht.klasse.php');
 
 $sid = $_GET['sid'];
 

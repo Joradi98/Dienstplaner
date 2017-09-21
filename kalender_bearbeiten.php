@@ -1,5 +1,5 @@
 <?php
-include('klassen/schicht.klasse.php');
+include_once('klassen/schicht.klasse.php');
 if($_GET['tag']<10 && substr($_GET['monat'],0,1)!='0')
 {
 	$tag = '0'.$_GET['tag'];

@@ -1,7 +1,7 @@
 <div id="hauptinhalt">
 <?php
 
-include('klassen/urlaub.klasse.php');
+include_once('klassen/urlaub.klasse.php');
 
 $mid = $_POST['mid'];
 if($mid==''){

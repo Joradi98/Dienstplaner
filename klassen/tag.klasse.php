@@ -1,5 +1,25 @@
 <?php
+
+
+
+
 date_default_timezone_set('UTC');
+
+
+
+
+#Helper functinos outside the class
+function addDateIntervals() {
+	$reference = new DateTimeImmutable;
+	$endTime = clone $reference;
+
+	foreach (func_get_args() as $dateInterval) {
+	   	$endTime = $endTime->add($dateInterval);
+	}
+	
+	return $reference->diff($endTime);	
+}
+
 
 
 class Tag
@@ -53,5 +73,10 @@ class Tag
 		}
 		return Tag::hole_tag_durch_tid($weekday);
 	}
+	
+	
+
+	
+	
 }
 ?>

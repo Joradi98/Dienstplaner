@@ -278,7 +278,44 @@ class Mitarbeiter
 		return true;
 	}
 
+	/*
+	* Uhrzeit: str, Termin: str
+	*/
+	public function hat_dienst($termin, $uhrzeit) {
 
+		if (StandardPlanManager::wird_angewendet($termin)) {
+			$tid = Tag::tag_an_termin($termin)->tid;
+			return $this->hat_standard_dienst($tid, $uhrzeit);
+			
+		} else {
+			return true;
+		}
+	}
+	
+	
+	/*
+	* Uhrzeit: str, Termin: str
+	*/
+	public function hat_standard_dienst($tid, $uhrzeit) {
+		#Schaue im Std-plan
+		$zeit = new DateTime($uhrzeit);
+
+		$query = "SELECT * FROM standard_plan WHERE tid=".$tid. " AND mid=" . $this->mid;
+		$puffer = mysql_query($query);
+		while($objekt = mysql_fetch_object($puffer, 'StandardPlanManager', array('tmid','tid', 'mid', 'von', 'bis'))) {
+			$von = new DateTime($objekt->von);
+			$bis = new DateTime($objekt->bis);
+	
+			if ($zeit >= $von && $zeit <= $bis) {
+				return true;
+						
+			}
+		}
+			
+		return false;
+	}
+	
+	
 
 }
 ?>

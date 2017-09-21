@@ -195,3 +195,66 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 	</table>
 </form>
 </div>
+
+
+<div id="monats_stats">
+<table id="tagesplan"> 
+<?php
+#Erstelle "Dienstplan" Tabelle
+
+#Zuerst die  Überschriften
+$start = new DateTime("6:45");
+$ende = new DateTime("16:15");
+
+echo '<tr>';
+echo '<th>Name</th>';
+$i = clone $start;
+while ($i <= $ende) {
+	#<div style="width:10px; overflow:hidden"> to come maybe
+	echo '<th id="clock_header">'. $i->format("H:i"). '</th>';
+	$i->modify("+ 15 minutes");
+}
+echo '</tr>';
+
+
+#Zeilen füllen
+$alle_ma = Mitarbeiter::hole_alle_mitarbeiter();
+foreach ($alle_ma as $mitarbeiter) {
+	echo '<tr id="tagesplan_reihe">';
+
+	#In der ersten Spalte der Name
+	echo '<td>'.$mitarbeiter->vname.' '. $mitarbeiter->name. '</td>';
+
+	
+	#Die anderen Spalten färben, falls ein Einsatz stattfindet
+	$i = clone $start;
+	while ($i <= $ende) {
+		if ( $mitarbeiter->hat_standard_dienst($tag->tid, $i->format("H:i")) ) {
+			echo '<td id="tagesplan_zelle" bgcolor=blue></td>';
+		} else {
+			echo '<td id="tagesplan_zelle" bgcolor=white></td>';
+		}
+
+		$i->modify("+ 15 minutes");
+	}
+
+
+
+	
+	echo '</tr>';
+}
+
+
+?>
+
+   
+</table>
+</div>
+
+
+
+
+
+
+
+

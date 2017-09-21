@@ -66,6 +66,32 @@ hr
     border-top:1px solid #acacac;
 }
 
+/* Tagesplan styles*/
+
+#clock_header
+{
+   /* transform: rotate(-45deg);*/
+    height: 4px;
+    width: 4px;
+    font-size: 12px;
+}
+
+#tagesplan
+{
+    border-collapse: collapse;
+}
+#tagesplan_reihe
+{
+    border: solid;
+    border-width: 1px 0px;
+}
+#tagesplan_zelle
+{
+    border: solid;
+    border-width: 0px 1px;
+}
+
+
 /* Header Styles */
 #kopf
 {
@@ -76,9 +102,9 @@ hr
 }
 #kopf_login
 {
-        background-image: url('../bilder/header_login.jpg');
-        width: 413px;
-        height: 78px;
+    background-image: url('../bilder/header_login.jpg');
+    width: 413px;
+    height: 78px;
 }
 #angemeldet
 {
@@ -94,7 +120,7 @@ hr
 {
 	color: #fff;
 	text-decoration: underline;
-        font-size:10px;
+    font-size:10px;
 }
 #angemeldet a:hover
 {

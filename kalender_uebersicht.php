@@ -104,6 +104,8 @@ foreach($kalender_feld as $woche)
 ?>
 		</table>
 </div>
+
+
 <div id="monats_stats">
 <?php
 $verwaltung = new Mitarbeiter();

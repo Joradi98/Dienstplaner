@@ -203,7 +203,7 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 
 
 <div id="monats_stats">
-<a id="hideButton" href="javascript:toggleTable();">Ausblenden</a>
+<a class="corner_button" href="javascript:toggleTable();" ><img id="hide_image" src="bilder/button_minus.png"></a>
 <table id="tagesplan"> 
 <?php
 #Erstelle "Dienstplan" Tabelle
@@ -226,19 +226,19 @@ echo '</tr>';
 #Zeilen füllen
 $alle_ma = Mitarbeiter::hole_alle_mitarbeiter();
 foreach ($alle_ma as $mitarbeiter) {
-	echo '<tr id="tagesplan_reihe">';
+	echo '<tr class="tagesplan_reihe">';
 
 	#In der ersten Spalte der Name
-	echo '<td>'.$mitarbeiter->vname.' '. $mitarbeiter->name. '</td>';
+	echo '<th>'.$mitarbeiter->vname.' '. $mitarbeiter->name. '</th>';
 
 	
 	#Die anderen Spalten färben, falls ein Einsatz stattfindet
 	$i = clone $start;
 	while ($i <= $ende) {
 		if ( $mitarbeiter->hat_standard_dienst($tag->tid, $i->format("H:i")) ) {
-			echo '<td id="tagesplan_zelle" bgcolor=blue></td>';
+			echo '<td class="tagesplan_zelle" bgcolor=blue></td>';
 		} else {
-			echo '<td id="tagesplan_zelle" bgcolor=white></td>';
+			echo '<td class="tagesplan_zelle" bgcolor=white></td>';
 		}
 
 		$i->modify("+ 15 minutes");
@@ -262,10 +262,10 @@ foreach ($alle_ma as $mitarbeiter) {
 
 function toggleTable() {
     var lTable = document.getElementById("tagesplan");
-	var hideButton = document.getElementById("hideButton");
+	var hide_image = document.getElementById("hide_image");
 
     lTable.style.display = (lTable.style.display != "none") ? "none" : "table";
-	hideButton.text = (lTable.style.display != "none") ? "Ausblenden" : "Einblenden";
+	hide_image.src = (lTable.style.display != "none") ? "bilder/button_minus.png" : "bilder/button_plus.png";
 }
 
 </script>

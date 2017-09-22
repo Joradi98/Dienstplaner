@@ -66,13 +66,12 @@ hr
     border-top:1px solid #acacac;
 }
 
+
 /* Tagesplan styles*/
 
 #clock_header
 {
    /* transform: rotate(-45deg);*/
-    height: 4px;
-    width: 4px;
     font-size: 12px;
 }
 
@@ -80,16 +79,26 @@ hr
 {
     border-collapse: collapse;
 }
-#tagesplan_reihe
+
+.tagesplan_reihe
 {
     border: solid;
     border-width: 1px 0px;
+
 }
-#tagesplan_zelle
+.tagesplan_zelle
 {
     border: solid;
     border-width: 0px 1px;
 }
+.corner_button
+{
+    position: fixed;
+    margin: -14px;
+}
+
+
+
 
 
 /* Header Styles */

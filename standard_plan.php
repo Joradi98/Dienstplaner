@@ -267,12 +267,29 @@ Hier oben rechts in der Ecke stehen super interesannte Sachen. Ja, nicht? Lorem 
 
 function toggleTable() {
     var lTable = document.getElementById("tagesplan");
-	var hide_image = document.getElementById("hide_image");
 
-    lTable.style.display = (lTable.style.display != "none") ? "none" : "table";
-	hide_image.src = (lTable.style.display != "none") ? "bilder/button_minus.png" : "bilder/button_plus.png";
+    if (typeof(Storage) !== "undefined") {
+        // Code for localStorage/sessionStorage.
+        var isShown = (lTable.style.display != "none") ? 1 : 0;
+        localStorage.setItem('showTable', isShown);
+    } 
+    loadTableSettings();
 }
 
+function loadTableSettings() {
+    var lTable = document.getElementById("tagesplan");
+	var hide_image = document.getElementById("hide_image");
+
+    if (typeof(Storage) !== "undefined") {
+        if (localStorage.showTable) {
+            lTable.style.display = (localStorage.showTable == 1) ? "none" : "table";
+	        hide_image.src = (localStorage.showTable == 1) ? "bilder/button_minus.png" : "bilder/button_plus.png";
+        }
+    }
+}
+   
+//Everytime the whole page is loaded, load the visual settings
+loadTableSettings();
 </script>
 
 

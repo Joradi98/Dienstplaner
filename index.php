@@ -24,6 +24,8 @@ if($_SESSION['mitarbeiter'])
 		<title>Dienstplaner</title>
 		<link rel="stylesheet" type="text/css" href="css/main_css.css">
           <link rel="stylesheet" type="text/css" href="css/kalender.css">
+            
+
           <script type="text/javascript" src="js/kalender.js"></script>
 	</head>
 	<body>

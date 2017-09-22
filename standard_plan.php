@@ -258,6 +258,11 @@ foreach ($alle_ma as $mitarbeiter) {
 </div>
 
 
+<div id="inhalt_rechts_oben" >
+Hier oben rechts in der Ecke stehen super interesannte Sachen. Ja, nicht? Lorem ipsum dolor sit amte nique usu de surum habilitas ferrum gerit
+</div>
+
+
 <script>
 
 function toggleTable() {

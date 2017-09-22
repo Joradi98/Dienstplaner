@@ -93,7 +93,7 @@ hr
 }
 .corner_button
 {
-    position: fixed;
+    position:absolute;
     margin: -14px;
 }
 

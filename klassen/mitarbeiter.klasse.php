@@ -230,7 +230,7 @@ class Mitarbeiter
 		}
 			
 		$total_hours = $interval->d * 24 + $interval->h;
-		return $total_hours . ":" . $interval->i;
+		return $total_hours . ":" . $interval->format("%I");
 	}
 		
 
@@ -253,7 +253,7 @@ class Mitarbeiter
 			$erster = $erster->modify("+1 day") ;
 		}
 		$total_hours = $interval->d * 24 + $interval->h;
-		return $total_hours . ":" . $interval->i;
+		return $total_hours . ":" . $interval->format("%I");
 
 	}
 

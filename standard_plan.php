@@ -236,9 +236,9 @@ foreach ($alle_ma as $mitarbeiter) {
 	$i = clone $start;
 	while ($i <= $ende) {
 		if ( $mitarbeiter->hat_standard_dienst($tag->tid, $i->format("H:i")) ) {
-			echo '<td class="tagesplan_zelle" bgcolor=blue></td>';
+			echo '<td class="tagesplan_zelle blue"></td>';
 		} else {
-			echo '<td class="tagesplan_zelle" bgcolor=white></td>';
+			echo '<td class="tagesplan_zelle"></td>';
 		}
 
 		$i->modify("+ 15 minutes");

@@ -115,7 +115,10 @@ $alle = $verwaltung->hole_alle_mitarbeiter();
 	<tr>
     	<th>Name</th>
     	<th>Stunden diesen Monat</th> 
-	</tr>
+    	<th>&Uuml;berstunden</th> 
+    	<th>Verbleibender Urlaub</th> 
+
+    </tr>
   
 	<?php
 		foreach ($alle as $mitarbeiter) {

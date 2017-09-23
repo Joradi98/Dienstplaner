@@ -1,3 +1,30 @@
+<script>
+
+function toggleTable() {
+    var lTable = document.getElementById("tagesplan");
+
+    if (typeof(Storage) !== "undefined") {
+        // Code for localStorage/sessionStorage.
+        var isShown = (lTable.style.display != "none") ? 1 : 0;
+        localStorage.setItem('showTable', isShown);
+    } 
+    loadTableSettings();
+}
+
+function loadTableSettings() {
+    var lTable = document.getElementById("tagesplan");
+	var hide_image = document.getElementById("hide_image");
+
+    if (typeof(Storage) !== "undefined") {
+        if (localStorage.showTable) {
+            lTable.style.display = (localStorage.showTable == 1) ? "none" : "table";
+	        hide_image.src = (localStorage.showTable == 1) ? "bilder/button_minus.png" : "bilder/button_plus.png";
+        }
+    }
+}
+</script>
+
+
 <?php
 /* Klassen Schicht und Urlaub einbinden */
 include_once('klassen/schicht.klasse.php');
@@ -320,6 +347,71 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 </table>
 </form>
 </div>
+
+
+
+<div id="monats_stats">
+
+<a class="corner_button" href="javascript:toggleTable();" ><img id="hide_image" src="bilder/button_minus.png"></a>
+<table id="tagesplan"> 
+<script>
+//Load the settings as early as possible
+loadTableSettings();
+</script>
+
+<?php
+#Erstelle "Dienstplan" Tabelle
+
+#Zuerst die  Überschriften
+$start = new DateTime("6:45");
+$ende = new DateTime("16:15");
+
+echo '<tr>';
+echo '<th>Name</th>';
+$i = clone $start;
+while ($i <= $ende) {
+	#<div style="width:10px; overflow:hidden"> to come maybe
+	echo '<th id="clock_header">'. $i->format("H:i"). '</th>';
+	$i->modify("+ 15 minutes");
+}
+echo '</tr>';
+
+
+#Zeilen füllen
+$alle_ma = Mitarbeiter::hole_alle_mitarbeiter();
+foreach ($alle_ma as $mitarbeiter) {
+	echo '<tr class="tagesplan_reihe">';
+
+	#In der ersten Spalte der Name
+	echo '<th>'.$mitarbeiter->vname.' '. $mitarbeiter->name. '</th>';
+
+	
+	#Die anderen Spalten färben, falls ein Einsatz stattfindet
+	$i = clone $start;
+	while ($i <= $ende) {
+		if ( $mitarbeiter->hat_dienst($termin, $i->format("H:i")) ) {
+			echo '<td class="tagesplan_zelle blue"></td>';
+		} else {
+			echo '<td class="tagesplan_zelle"></td>';
+		}
+
+		$i->modify("+ 15 minutes");
+	}
+
+
+
+	
+	echo '</tr>';
+}
+
+
+?>
+
+</table>
+</div>
+
+
+
 
 
 

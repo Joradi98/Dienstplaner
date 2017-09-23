@@ -1,6 +1,8 @@
 <?php
 
 include_once "tag.klasse.php";
+include_once "schicht_mitarbeiter.klasse.php";
+
 include_once "StandardPlanManager.klasse.php";
 
 class Mitarbeiter
@@ -352,7 +354,7 @@ class Mitarbeiter
 			return $this->hat_standard_dienst($tid, $uhrzeit);
 			
 		} else {
-			return true;
+			return $this->hat_sonder_dienst($termin,$uhrzeit);
 		}
 	}
 	
@@ -377,6 +379,23 @@ class Mitarbeiter
 		}
 			
 		return false;
+	}
+	
+	
+	
+	public function hat_sonder_dienst($termin, $uhrzeit) {
+		$zeit = new DateTime($uhrzeit);
+		$schichten = Schicht_Mitarbeiter::hole_alle_schicht_mitarbeiter_durch_mid_termin($this->mid, $termin);
+		foreach ($schichten as $schicht) {
+			$von = new DateTime($schicht->von);
+			$bis = new DateTime($schicht->bis);
+			if ($zeit >= $von && $zeit <= $bis) {
+				return true;
+			}
+		}
+		return false;
+		
+
 	}
 	
 	

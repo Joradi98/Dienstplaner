@@ -280,7 +280,7 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
 		$schicht_mitarbeiter = new Schicht_Mitarbeiter();
 		#Berechen stundenzahl diese woche
-		$stunden = $mitarbeiter->brutto_workload_diese_woche($termin);
+		$stunden = $mitarbeiter->netto_workload_diese_woche($termin);
 			
 		#Gehe alle Urlaube des Mitarbeiters durch
 		foreach($urlaub_feld as $urlaub_objekt) {

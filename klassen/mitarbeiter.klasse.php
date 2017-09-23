@@ -178,7 +178,7 @@ class Mitarbeiter
 	/*	Gibt an, wie viele Stunden der MA am Termin arbeitet. Pausen nicht berŸcksichtigt
 	*	Returns: DateInterval
 	*/
-	public function brutto_stunden_am_termin($termin) {
+	public function netto_stunden_am_termin($termin) {
 		$tag = Tag::tag_an_termin($termin);
 		$interval = new DateInterval("P0Y");
 		if (StandardPlanManager::wird_angewendet($termin)) {
@@ -195,40 +195,54 @@ class Mitarbeiter
 		foreach ($schichten as $schicht) {
 			$ab = new DateTime($schicht->von);
 			$bis = new DateTime($schicht->bis);
-			
 			$spanne = $ab->diff($bis);
+			
+			#Pause abziehen, wenn >=06:30h gearbeitet wird
+			$check1 = ($spanne->h > 6);
+			$check2 = ($spanne->h == 6 && $spanne->i >= 30);
+			$pausenzeit = new DateInterval('PT30M'); #30 Minuten Pausenzeit (https://stackoverflow.com/questions/21742329/how-to-create-a-dateinterval-from-a-time-string)
+
+			if ( $check1 || $check2 ) {
+				$spanne = subDateIntervals($pausenzeit, $spanne); #Reihenfolge wichtig
+			}
+			
 			$interval = addDateIntervals($interval, $spanne);
 		}
-		#echo $interval->format("%H:%I");
 		return $interval;
 
-		
-		
 	}
 
 
 	/*	Gibt an, wie viele Stunden der MA am Termin laut Standardplan arbeitet. Pausen nicht berŸcksichtigt
 	*	Returns: DateInterval
 	*/
-	public function brutto_standard_stunden_am_termin($termin) {
+	public function netto_standard_stunden_am_termin($termin) {
 		$tag = Tag::tag_an_termin($termin);
 		$interval = new DateInterval("P0Y");
 		$schichten = StandardPlanManager::hole_alle_schichten_durch_ma_tid($this->mid, $tag->tid);
 		foreach ($schichten as $schicht) {
 			$ab = new DateTime($schicht->von);
 			$bis = new DateTime($schicht->bis);
-				
 			$spanne = $ab->diff($bis);
+			
+			#Pause abziehen, wenn >=06:30h gearbeitet wird
+			$check1 = ($spanne->h > 6);
+			$check2 = ($spanne->h == 6 && $spanne->i >= 30);
+			$pausenzeit = new DateInterval('PT30M'); #30 Minuten Pausenzeit (https://stackoverflow.com/questions/21742329/how-to-create-a-dateinterval-from-a-time-string)
+
+			if ( $check1 || $check2 ) {
+				$spanne = subDateIntervals($pausenzeit, $spanne); #Reihenfolge wichtig
+			}
+			
 			$interval = addDateIntervals($interval, $spanne);
 		}
-		#echo $interval->format("%H:%I");
 		return $interval;
 	}
 	
 	/*
 	Im Gegensatz zu stunden_diese_woche liefert diese Funktion direkt einen String zurŸck. 
 	*/
-	public function brutto_workload_diese_woche($termin) {
+	public function netto_workload_diese_woche($termin) {
 			
 		$kalender = new Kalender();
 		#Begrenzende Tage der Woche
@@ -240,10 +254,8 @@ class Mitarbeiter
 
 		#Nice while-statement :P
 		while ($montag != $next_montag) {
-			$brutto_tag = $this->brutto_stunden_am_termin($montag);
-				
-			#echo $brutto_tag->format("%H:%i") . "am " . $montag . "##";
-			$interval = addDateIntervals($interval, $brutto_tag);
+			$netto_tag = $this->netto_stunden_am_termin($montag);
+			$interval = addDateIntervals($interval, $netto_tag);
 			$montag = date('Y-m-d',(strtotime ( '+ 1 day' , strtotime ( $montag) ) ));
 		}
 			
@@ -257,7 +269,7 @@ class Mitarbeiter
 	/*
 	Im Gegensatz zu stunden_diesen_monat liefert diese Funktion direkt einen String zurŸck. 
 	*/
-	public function brutto_workload_diesen_monat($termin) {
+	public function netto_workload_diesen_monat($termin) {
 					
 		$kalender = new Kalender();
 		#Begrenzende Tage der Woche
@@ -267,9 +279,8 @@ class Mitarbeiter
 		
 		#Solagen wir uns im gleichen Monat bewegen
 		while ($erster->format('Y-m') == $datum->format('Y-m')) {
-			$brutto_tag = $this->brutto_stunden_am_termin($erster->format("Y-m-d"));
-			#echo $brutto_tag->format("%H:%i") . "am " . $erster->format('Y-m-d') . "##";
-			$interval = addDateIntervals($interval, $brutto_tag);
+			$netto_tag = $this->netto_stunden_am_termin($erster->format("Y-m-d"));
+			$interval = addDateIntervals($interval, $netto_tag);
 			$erster = $erster->modify("+1 day") ;
 		}
 		$total_hours = $interval->d * 24 + $interval->h;
@@ -291,8 +302,8 @@ class Mitarbeiter
 		$ins = new DateTime();
 		#Solagen wir uns im gleichen Monat bewegen
 		while ($erster->format('Y-m') == $datum->format('Y-m')) {
-			$standard_std = $this->brutto_standard_stunden_am_termin($erster->format("Y-m-d"));
-			$richtige_std = $this->brutto_stunden_am_termin($erster->format("Y-m-d"));
+			$standard_std = $this->netto_standard_stunden_am_termin($erster->format("Y-m-d"));
+			$richtige_std = $this->netto_stunden_am_termin($erster->format("Y-m-d"));
 
 			//Differenz berechnen
 			$ueber_std = subDateIntervals($standard_std,$richtige_std); #FUnktioniert auch, wenn weniger gearbeitet wird, als normal. Verrehcnet schon abgefeierte †st.

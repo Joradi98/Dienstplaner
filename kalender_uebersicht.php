@@ -114,7 +114,7 @@ $alle = $verwaltung->hole_alle_mitarbeiter();
 <table class="stunden_tabelle"> 
 	<tr>
     	<th>Name</th>
-    	<th>Brutto<br>Stunden</th> 
+    	<th>Netto<br>Stunden</th> 
     	<th>Verbleibende<br>&Uuml;berstunden</th> 
     	<th>Resturlaub</th> 
 
@@ -123,7 +123,7 @@ $alle = $verwaltung->hole_alle_mitarbeiter();
 	<?php
 		foreach ($alle as $mitarbeiter) {
 			echo "<tr> <td>" . $mitarbeiter->name . ", " . $mitarbeiter->vname . "</td>";
-			$stunden = $mitarbeiter->brutto_workload_diesen_monat($termin);
+			$stunden = $mitarbeiter->netto_workload_diesen_monat($termin);
 			echo '<td>' . $stunden. " </td> ";
 			
 			$ueberstunden = $mitarbeiter->ueberstunden_diesen_monat($termin);

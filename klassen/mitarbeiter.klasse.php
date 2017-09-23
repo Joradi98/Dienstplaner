@@ -369,6 +369,17 @@ class Mitarbeiter
 	}
 	
 	
+	/*
+	*	Gibt die Anzahl der verbelibenden Urlaubstage zurŸck
+	*/
+	public function resturlaub() {
+		$anzahl_urlaubstage = mysql_fetch_array(mysql_query('SELECT sum(tage) FROM urlaub WHERE mid = "'.$this->mid.'" GROUP BY mid'));
+		/* Resturlaub berechnen */
+		$resturlaub =  $this->max_u - $anzahl_urlaubstage[0];
+		return $resturlaub;
+
+	}
+	
 
 }
 ?>

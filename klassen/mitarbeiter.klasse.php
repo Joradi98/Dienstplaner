@@ -207,6 +207,24 @@ class Mitarbeiter
 	}
 
 
+	/*	Gibt an, wie viele Stunden der MA am Termin laut Standardplan arbeitet. Pausen nicht berŸcksichtigt
+	*	Returns: DateInterval
+	*/
+	public function brutto_standard_stunden_am_termin($termin) {
+		$tag = Tag::tag_an_termin($termin);
+		$interval = new DateInterval("P0Y");
+		$schichten = StandardPlanManager::hole_alle_schichten_durch_ma_tid($this->mid, $tag->tid);
+		foreach ($schichten as $schicht) {
+			$ab = new DateTime($schicht->von);
+			$bis = new DateTime($schicht->bis);
+				
+			$spanne = $ab->diff($bis);
+			$interval = addDateIntervals($interval, $spanne);
+		}
+		#echo $interval->format("%H:%I");
+		return $interval;
+	}
+	
 	/*
 	Im Gegensatz zu stunden_diese_woche liefert diese Funktion direkt einen String zurŸck. 
 	*/
@@ -234,6 +252,8 @@ class Mitarbeiter
 	}
 		
 
+
+
 	/*
 	Im Gegensatz zu stunden_diesen_monat liefert diese Funktion direkt einen String zurŸck. 
 	*/
@@ -255,6 +275,39 @@ class Mitarbeiter
 		$total_hours = $interval->d * 24 + $interval->h;
 		return $total_hours . ":" . $interval->format("%I");
 
+	}
+
+
+	/*
+	*	Berechnet †berstunden im aktuellen Monat beruhend auf dem Standardplan
+	*/
+	public function ueberstunden_diesen_monat($termin) {
+		$kalender = new Kalender();
+		#Begrenzende Tage der Woche
+		$datum = new DateTime($termin);
+		$erster = new DateTime($datum->format("Y-m-01")) ;
+		$interval = new DateInterval("P0Y"); //0 years
+		
+		$ins = new DateTime();
+		#Solagen wir uns im gleichen Monat bewegen
+		while ($erster->format('Y-m') == $datum->format('Y-m')) {
+			$standard_std = $this->brutto_standard_stunden_am_termin($erster->format("Y-m-d"));
+			$richtige_std = $this->brutto_stunden_am_termin($erster->format("Y-m-d"));
+
+			//Differenz berechnen
+			$ueber_std = subDateIntervals($standard_std,$richtige_std); #FUnktioniert auch, wenn weniger gearbeitet wird, als normal. Verrehcnet schon abgefeierte †st.
+			$interval = addDateIntervals($interval, $ueber_std);
+		
+
+			$erster = $erster->modify("+1 day") ;
+		}
+
+
+		#Hier weerden †berstunden mitgezŠhlt
+		$total_hours = $interval->d * 24 + $interval->h;
+		return $total_hours . ":" . $interval->format("%I");
+		
+		
 	}
 
 	/*

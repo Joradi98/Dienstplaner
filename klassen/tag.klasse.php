@@ -20,7 +20,18 @@ function addDateIntervals() {
 	return $reference->diff($endTime);	
 }
 
+/*
+*	
+*/
+function subDateIntervals($int1, $int2) {
+	$base_time1 = new DateTime('midnight');
+	$base_time2 = new DateTime('midnight');
 
+	$base_time1->add($int1);
+	$base_time2->add($int2);
+	
+	return $base_time1->diff($base_time2);
+}
 
 class Tag
 {

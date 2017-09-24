@@ -34,5 +34,17 @@ class Status
 		}
 		return "";
 	}
+	
+	
+	public static function hole_alle_status() {
+		$array = array();
+
+		$puffer = mysql_query("SELECT * FROM status ORDER BY stid");
+		while($objekt = mysql_fetch_object($puffer, 'Status', array('stid', 'bez'))) {
+			$array[] = $objekt;
+		}
+		return $array;
+	}
+	
 }
 ?>

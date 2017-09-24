@@ -1,5 +1,9 @@
 <div id="hauptinhalt">
 <?php
+include_once "klassen/status.klasse.php";
+
+
+
 $mid = $_POST['mid'];
 if($mid==''){
 $mid = $_GET['mid'];
@@ -77,8 +81,10 @@ if(isset($_POST['speichern']))
      /* wenn kein Fehler gefunden wurde, speichern der Angaben */
 	if(count($fehler)=='0')
 	{
-		$mitarbeiter->erneuere_mitarbeiter($mitarbeiter->mid , $_POST['name'], $_POST['vname'], $_POST['adresse'], $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['recht'], $pw, $_POST['aktiv']);
+		$mitarbeiter->erneuere_mitarbeiter($mitarbeiter->mid , $_POST['name'], $_POST['vname'], $_POST['adresse'], $_POST['tel'], $_POST['email'], $_POST['max_h_d'], $_POST['max_h_w'], $_POST['max_h_m'], $_POST['max_u'], $_POST['status'], $pw, $_POST['aktiv']);
 		$erfolg = 'Mitarbeiter wurde erfolgreich aktualisiert.';
+		#Nochmal setzen, damit Daten aktualisiert werden
+		$mitarbeiter = Mitarbeiter::hole_mitarbeiter_durch_id($_GET["mid"]);
 	}
 }
 ?>
@@ -118,42 +124,45 @@ else
                 </tr>
                 <tr>
                 	<td class="beschriftung"<?php if(isset($fehler['pw'])) echo 'style="color:red;"'; ?>>* Passwort</td>
-<?php                   if($_SESSION['mitarbeiter']->recht=='1')
-			 {
-			     	echo '<td class="beschriftung">Admin</td>';
-                         }
-                         else
-                         {
-                                echo '<td></td>';
-                         }
+<?php
+
+echo '<td class="beschriftung">Status</td>';
+
+
+
 ?>
                 	
-                </tr>
-                <tr>
-                        <td><input class="feld" type="password" size="25" name="pw" value="<?php if(isset($_POST['pw'])) echo $_POST['pw']; else echo $mitarbeiter->pw; ?>"></td>
+</tr>
+<tr>
+<td><input class="feld" type="password" size="25" name="pw" value="<?php if(isset($_POST['pw'])) echo $_POST['pw']; else echo $mitarbeiter->pw; ?>"></td>
+
 <?php
-			/* nur Administrator, darf Recht, Arbeitsstunden und Urlaub bearbeiten */
-                if($_SESSION['mitarbeiter']->recht=='1')
-			 {
+/* nur Administrator, darf Recht, Arbeitsstunden und Urlaub bearbeiten */
+if($_SESSION['mitarbeiter']->recht=='1') {
 						
-                                echo '<td>';
-                                    echo '<input type="radio" name="recht" value="1" ';
-                                    if($mitarbeiter->recht==1) echo 'checked="checked"';
-                                    echo '> ja &nbsp;';
-                                    echo '<input type="radio" name="recht" value="0" ';
-                                    if($mitarbeiter->recht==0) echo 'checked="checked"';
-                                    echo '> nein';
-					
-                                    echo '<input type="hidden" name="aktiv" value="'.$mitarbeiter->aktiv.'">';
-				echo '</td>';
+	
+	echo '<td>';			
+	echo '<input type="hidden" name="aktiv" value="'.$mitarbeiter->aktiv.'">';
+	
+	echo '<select name="status">';
+	$alle_status = Status::hole_alle_status();	
+	echo "hallo";
+	echo $mitarbeiter->name;
+	foreach ($alle_status as $status) {
+		if ( $mitarbeiter->status == $status->stid) {
+			echo '<option selected value='.$status->stid.'>'.$status->bez;
+		} else {
+			echo '<option value='.$status->stid.'>'.$status->bez;
+		}
+	}
+	
+	echo '</select></td>';
                 	
-                        }
-                       else
-                       {   
-                            echo '<td> <input type="hidden" name="aktiv" value="'.$mitarbeiter->aktiv.'">
-                                <input type="hidden" name="recht" value="'.$mitarbeiter->recht.'"></td>';
-                       }
-               echo '</tr>';
+} else  {   
+	echo '<td> <input type="hidden" name="aktiv" value='.$mitarbeiter->aktiv.'>
+	<input type="hidden" name="recht" value="'.$mitarbeiter->recht.'"></td>';
+}
+echo '</tr>';
 ?>
         </table>
         <table id="top_right">

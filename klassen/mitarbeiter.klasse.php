@@ -102,9 +102,11 @@ class Mitarbeiter
 	 *						Passwort (bereits md5 verschlüsselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
-	public static function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $pw, $aktiv = '0')
+	public static function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $status, $pw, $aktiv = 0)
 	{
-		mysql_query("UPDATE mitarbeiter SET name='".$name."', vname='".$vname."', adresse='".$adresse."', tel='".$tel."', email='".$email."', max_h_d='".$max_h_d."', max_h_w='".$max_h_w."', max_h_m='".$max_h_m."', max_u='".$max_u."', recht='".$recht."', pw='".$pw."', aktiv='".$aktiv."' WHERE mid='".$mid."'");
+
+		$query = "UPDATE mitarbeiter SET name='".$name."', vname='".$vname."', adresse='".$adresse."', tel='".$tel."', email='".$email."', max_h_d='".$max_h_d."', max_h_w='".$max_h_w."', max_h_m='".$max_h_m."', max_u='".$max_u."', status=".$status.", pw='".$pw."', aktiv=".$aktiv." WHERE mid='".$mid."'";
+		mysql_query($query);
 	}
 
 	/* Löscht den Mitarbeiter anhand der übergebenen Mitarbeiterid

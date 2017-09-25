@@ -554,12 +554,33 @@ tr.hr td, tr.hr td hr
 	height: 49px;
 	width: 90px;
 	vertical-align: top;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 2px solid #ccc;
     border-right: 1px solid #ccc;
     overflow:hidden;
     padding:2px;
 
+
 }
+.kalenderfeld a:hover
+{
+	background: lightblue;
+}
+.kalenderfeld span
+{
+    float:left;
+    padding: 1px;
+    
+}
+.birthdayspan
+{
+    border: 2px solid #e86d12;
+    background: white;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+
+
 .tagLink
 {
     color:#150e7e;
@@ -581,23 +602,12 @@ tr.hr td, tr.hr td hr
 .kalenderLink
 {
 	display: block;
-	width: 70px;
-    height: 10px;
-    float: right;
-    font-size: 8px;
+    width: 70px;
+    float: left;
+    font-size: 10px;
     color:#000;
     border: 1px solid #acacac;
     margin:1px;
-}
-.kalenderfeld a:hover
-{
-	background: lightblue;
-}
-.kalenderfeld span
-{
-    float:left;
-    height: 40px;
-    margin-right:5px;
 }
 
 #nach_plan_text

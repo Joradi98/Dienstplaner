@@ -42,7 +42,7 @@ $schicht_mitarbeiter_kalender_feld = $schicht_mitarbeiter_kalender->hole_alle_sc
 				<th class="kalenderhead_7">Sonntag</th>
 			</tr>
 <?php
-$test = 0;
+$erster_counter = 0;
 $col=0;
 $row=1;
 foreach($kalender_feld as $woche)
@@ -63,19 +63,30 @@ foreach($kalender_feld as $woche)
 			case 7: $col_class = 'col_7'; break;   
 		}
 		
-		if($tag=='1') {
-			$test++;
+		#Wenn wir uns am ersten des Monats befinden
+		if($tag == 01) {
+			$erster_counter++;
 		}
 		
-		if($test!='1') {
+		if($erster_counter !=1 ) {
 			//Für die Überhanänge aus anderen Monaten
-			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#acacac;"><span>' .$tag. '</span></td>';
+			
+			
+			echo '<td class="kalenderfeld" style="color:#acacac;"><span>' .$tag. '</span></td>';
+			
+
 		} else {
 			#Für den aktuellen Monat
 			$kalender_termin = $kalender->jahr.'-'.$kalender->monat.'-'.$tag;
 			
+			if ( Mitarbeiter::jemand_hat_geburtstag($kalender_termin) ){	
+				$span_class = "birthdayspan";
+			} else {
+				$span_class = "";
+			}
 			
-			echo '<td class="kalenderfeld '.$col_class.' '.$row_class.'" style="color:#150e7e;"><span>'.'<a href="index.php?seite=kalender&sub=tag&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'" style="color:#150e7e;">'.$tag.'</a>'.'</span>';
+			echo '<td class="kalenderfeld" style="color:#150e7e;"><span class="'.$span_class.'"><a href="index.php?seite=kalender&sub=tag&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'" style="color:#150e7e;">'.$tag.'</a>'.'</span>';
+			
 			
 			if ( StandardPlanManager::wird_angewendet($kalender_termin) ) {
 				
@@ -88,10 +99,13 @@ foreach($kalender_feld as $woche)
 			}
 			
 			
-			
-			
 			echo '</td>';
 		}
+		
+		 
+		
+		
+		
 		
 		if($col==7){
 			$col=0;

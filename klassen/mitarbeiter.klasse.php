@@ -11,7 +11,7 @@ class Mitarbeiter
 	public $name;
 	public $vname;
 	public $adresse;
-	public $tel;
+	public $geburtstag;
 	public $email;
 	public $max_h_d;
 	public $max_h_w;
@@ -33,7 +33,7 @@ class Mitarbeiter
 	 * Übergabeparameter:	Name
 	 * 						Vorname
 	 * 						Adresse
-	 * 						Telefon
+	 * 						geburtstag
 	 * 						E-Mail UNIQUE
 	 * 						Arbeitsstunden Tag
 	 * 						Arbeitsstunden Woche
@@ -43,9 +43,9 @@ class Mitarbeiter
 	 *						Passwort (bereits md5 verschlüsselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
-	public static function schreibe_mitarbeiter($name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $status, $pw, $aktiv = '0')
+	public static function schreibe_mitarbeiter($name, $vname, $adresse, $geburtstag, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $recht, $status, $pw, $aktiv = '0')
 	{
-		$query = 'INSERT INTO mitarbeiter VALUES(NULL,"'.$name.'","'.$vname.'","'.$adresse.'","'.$tel.'","'.$email.'","'.intval($max_h_d).'","'.intval($max_h_w).'","'.intval($max_h_m).'","'.intval($max_u).'","'.intval($recht). '","'.intval($status).'","'.$pw.'", "'.$aktiv.'")';
+		$query = 'INSERT INTO mitarbeiter VALUES(NULL,"'.$name.'","'.$vname.'","'.$adresse.'","'.$geburtstag.'","'.$email.'","'.intval($max_h_d).'","'.intval($max_h_w).'","'.intval($max_h_m).'","'.intval($max_u).'","'.intval($recht). '","'.intval($status).'","'.$pw.'", "'.$aktiv.'")';
 		mysql_query($query);
 	}
 
@@ -56,7 +56,7 @@ class Mitarbeiter
 	public static function hole_mitarbeiter_durch_id($mid)
 	{
 		$puffer = mysql_query('SELECT * FROM mitarbeiter WHERE mid = '.$mid);
-		$mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'tel', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'status', 'pw', 'aktiv'));
+		$mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'geburtstag', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'status', 'pw', 'aktiv'));
 
 		return $mitarbeiter_objekt;
 	}
@@ -68,7 +68,7 @@ class Mitarbeiter
 	public static function hole_mitarbeiter_durch_email($email)
 	{
 		$puffer = mysql_query("SELECT * FROM mitarbeiter WHERE email='".$email."'");
-		$mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'tel', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'status', 'pw', 'aktiv'));
+		$mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'geburtstag', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'status', 'pw', 'aktiv'));
 
 		return $mitarbeiter_objekt;
 	}
@@ -80,7 +80,7 @@ class Mitarbeiter
 	{
 		$mitarbeiter_objekt_feld = array();
 		$puffer = mysql_query('SELECT * FROM mitarbeiter');
-		while($mitarbeiter_objekt = $mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'tel', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'status', 'pw', 'aktiv')))
+		while($mitarbeiter_objekt = $mitarbeiter_objekt = mysql_fetch_object($puffer, 'Mitarbeiter' , array('mid', 'name', 'vname', 'adresse', 'geburtstag', 'email', 'max_h_d', 'max_h_w', 'max_h_m', 'max_u', 'recht', 'status', 'pw', 'aktiv')))
 		{
 			$mitarbeiter_objekt_feld[] = $mitarbeiter_objekt;
 		}
@@ -92,7 +92,7 @@ class Mitarbeiter
 	 * 						Name
 	 * 						Vorname
 	 * 						Adresse
-	 * 						Telefon
+	 * 						geburtstag
 	 * 						E-Mail UNIQUE
 	 * 						Arbeitsstunden Tag
 	 * 						Arbeitsstunden Woche
@@ -102,10 +102,10 @@ class Mitarbeiter
 	 *						Passwort (bereits md5 verschlüsselt)
 	 *						Aktivstatus (0 = inaktiv, 1 = aktiv -> Standard = 0)
 	 */
-	public static function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $tel, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $status, $pw, $aktiv = 0)
+	public static function erneuere_mitarbeiter($mid, $name, $vname, $adresse, $geburtstag, $email, $max_h_d, $max_h_w, $max_h_m, $max_u, $status, $pw, $aktiv = 0)
 	{
 
-		$query = "UPDATE mitarbeiter SET name='".$name."', vname='".$vname."', adresse='".$adresse."', tel='".$tel."', email='".$email."', max_h_d='".$max_h_d."', max_h_w='".$max_h_w."', max_h_m='".$max_h_m."', max_u='".$max_u."', status=".$status.", pw='".$pw."', aktiv=".$aktiv." WHERE mid='".$mid."'";
+		$query = "UPDATE mitarbeiter SET name='".$name."', vname='".$vname."', adresse='".$adresse."', geburtstag='".$geburtstag."', email='".$email."', max_h_d='".$max_h_d."', max_h_w='".$max_h_w."', max_h_m='".$max_h_m."', max_u='".$max_u."', status=".$status.", pw='".$pw."', aktiv=".$aktiv." WHERE mid='".$mid."'";
 		mysql_query($query);
 	}
 
@@ -410,6 +410,21 @@ class Mitarbeiter
 		$resturlaub =  $this->max_u - $anzahl_urlaubstage[0];
 		return $resturlaub;
 
+	}
+	
+	public static function jemand_hat_geburtstag($termin) {
+		
+		$alle = Mitarbeiter::hole_alle_mitarbeiter();
+		foreach ($alle as $mitarbeiter) {
+			$birthday = new DateTime($mitarbeiter->geburtstag);
+			$day = new DateTime($termin);
+			
+			if ( $birthday->format("m-d") == $day->format("m-d") ) {
+				return true;
+			}
+		}
+		return false;
+		
 	}
 	
 

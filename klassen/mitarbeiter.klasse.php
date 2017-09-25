@@ -2,7 +2,7 @@
 
 include_once "tag.klasse.php";
 include_once "schicht_mitarbeiter.klasse.php";
-
+include_once "urlaub.klasse.php";
 include_once "StandardPlanManager.klasse.php";
 
 class Mitarbeiter
@@ -142,7 +142,9 @@ class Mitarbeiter
 	}
 	
 	
-	//Gibt an, ob der MA für eine gewisse Zeit verfügbar ist (oder schon andeerweitig eingesetzt). Berücksichtigt nicht Urlaub
+	/*Gibt an, ob der MA für eine gewisse Zeit verfügbar ist (oder schon andeerweitig eingesetzt). Berücksichtigt nicht Urlaub.
+	* Termin: str
+	*/
 	public function ist_im_Urlaub($termin) {
 		$urlaub = new Urlaub();
 		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($this->mid);
@@ -177,6 +179,9 @@ class Mitarbeiter
 		#Falls nichts gefunden wurde, ist der MA verfübar
 		return true;
 	 }
+
+
+
 
 
 	/*	Gibt an, wie viele Stunden der MA am Termin arbeitet. Pausen nicht berücksichtigt

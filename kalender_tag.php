@@ -299,9 +299,6 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 	$alle_ma = $ma_verwalter->hole_alle_mitarbeiter();
 
 	foreach($alle_ma as $mitarbeiter) {
-		//Berücksichtige Urlaub
-		$urlaub = new Urlaub();
-		$urlaub_feld = $urlaub->hole_urlaub_durch_mid($mitarbeiter->mid);
 		$test = 0;
 
 		#Berechne, in wievielen Schichten der MA diese Woch eschon eingesetzt ist
@@ -309,15 +306,11 @@ if($_SESSION['mitarbeiter']->recht=='1') {
 		#Berechen stundenzahl diese woche
 		$stunden = $mitarbeiter->netto_workload_diese_woche($termin);
 			
-		#Gehe alle Urlaube des Mitarbeiters durch
-		foreach($urlaub_feld as $urlaub_objekt) {
-			#Liegt der aktuell berabeitete Teremin mitten in seinem Urlaub, zeige den entsprechenden MA nicht an
-			if($termin >= $urlaub_objekt->ab && $termin <= $urlaub_objekt->bis) {
-				$test='2';
-				echo '<option disabled value=' . $mitarbeiter->mid . '>' . $mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub </option>';
-
-			} 
-		}
+		if( $mitarbeiter->ist_im_Urlaub($termin) ) {
+			$test='2';
+			echo '<option disabled value=' . $mitarbeiter->mid . '>' . $mitarbeiter->name.', '.$mitarbeiter->vname.' im Urlaub </option>';
+		} 
+		
 
 
 		#Wenn der MA schon eingetragen wurde, kann er nicht zweifach eingetragen werden

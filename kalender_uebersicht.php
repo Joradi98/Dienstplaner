@@ -79,13 +79,23 @@ foreach($kalender_feld as $woche)
 			#Für den aktuellen Monat
 			$kalender_termin = $kalender->jahr.'-'.$kalender->monat.'-'.$tag;
 			
-			if ( Mitarbeiter::jemand_hat_geburtstag($kalender_termin) ){	
+			#Zeige geburtstag an
+			if ( Mitarbeiter::jemand_hat_geburtstag($kalender_termin) ) {
 				$span_class = "birthdayspan";
 			} else {
 				$span_class = "";
 			}
-			
 			echo '<td class="kalenderfeld" style="color:#150e7e;"><span class="'.$span_class.'"><a href="index.php?seite=kalender&sub=tag&jahr='.$kalender->jahr.'&monat='.$kalender->monat.'&tag='.$tag.'" style="color:#150e7e;">'.$tag.'</a>'.'</span>';
+			
+			
+			#Zeige an, wer im Urlaub ist
+			$alle_ma = Mitarbeiter::hole_alle_mitarbeiter();
+			foreach($alle_ma as $mitarbeiter) {
+				if  ($mitarbeiter->ist_im_Urlaub($kalender_termin) ) {
+					echo '<br><div id="urlaub_text">Urlaub: '.$mitarbeiter->vname;
+				}
+				
+			}
 			
 			
 			if ( StandardPlanManager::wird_angewendet($kalender_termin) ) {

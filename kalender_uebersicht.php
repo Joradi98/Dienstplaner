@@ -100,13 +100,16 @@ foreach($kalender_feld as $woche)
 			
 			if ( StandardPlanManager::wird_angewendet($kalender_termin) ) {
 				
-				if ( StandardPlanManager::funktioniert_problemlos($kalender_termin) ) {
-					echo '<br><div id="nach_plan_text">Nach Plan</div>';
-				}			
-			
 			} else {
 				echo '<br><div id="sonder_plan_text">Sonderplan</div>';
 			}
+			
+			#funktioniert_problemlos berücksichtigt nicht nur den standardplan
+			if ( StandardPlanManager::funktioniert_problemlos($kalender_termin) ) {
+				#echo '<br><div id="nach_plan_text">Nach Plan</div>';
+			} else {
+				echo '<br><div id="achtung_text">Achtung</div>';
+			}	
 			
 			
 			echo '</td>';

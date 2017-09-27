@@ -1,4 +1,6 @@
 <?php
+include_once("tag.klasse.php");
+
 class StandardPlanManager
 {
 	public $tmid;
@@ -55,13 +57,60 @@ class StandardPlanManager
 
 	}
 	
+	/*
+	* Termin: str, Uhrzeit: DateTime
+	*/
+	private static function fachkraft_anwesend($termin, $uhrzeit) {
+		
+	
+
+		if ( StandardPlanManager::wird_angewendet($termin) ) {
+			$tag = Tag::tag_an_termin($termin);
+			$query = 'SELECT mitarbeiter.mid, standard_plan.von, standard_plan.bis FROM standard_plan INNER JOIN mitarbeiter ON standard_plan.mid=mitarbeiter.mid WHERE tid='.$tag->tid. ' AND mitarbeiter.status=1;';
+			$puffer = mysql_query($query);
+		} else {
+			$query = 'SELECT * FROM schicht_mitarbeiter WHERE termin="'.$termin.'"';
+			$puffer = mysql_query($query);
+		}
+		
+		while($object = mysql_fetch_assoc($puffer)) {
+			$von = new DateTime( $object["von"] );
+			$bis = new DateTime( $object["bis"] );
+			
+			if ($von <= $uhrzeit && $bis >= $uhrzeit) { return true; }
+		}
+
+		
+
+		return false;
+		
+	}
 	
 	
-	
-	/* Unter Berücksichtigung aller Faktoren und Funktion, wie Urlaub, ÜST, Krankmeldungen, berechnet diese Funktion, ob der Standard Plan am gegebenen Termin problemlos klappt
-		Hint: ja
+	/* Unter Berücksichtigung aller Faktoren und Funktion, wie Urlaub, ÜST, Krankmeldungen, berechnet diese Funktion, ob der Plan dieses Tages (Standard oder Sonder) funktioniert.
+		Termin: str
 	 */
 	public static function funktioniert_problemlos($termin) {
+		$tag = Tag::tag_an_termin($termin);
+
+		#Regel nummer eins: Zwischen 6:45 und 16:16 muss immer eine Fachkraft anwesend sein. Gilt nur Montags-Freitags
+		if ($tag->tid >= 6) { return true; }
+		
+		$start = new DateTime("6:45");
+		$ende = new DateTime("16:15");
+
+		$i = clone $start;
+		while ($i <= $ende) {
+			
+			if ( StandardPlanManager::fachkraft_anwesend($termin, $i) == false ) {
+				return false;
+			}
+			
+			$i->modify("+ 15 minutes");
+		}
+
+		
+		
 		return true;
 	}
 	

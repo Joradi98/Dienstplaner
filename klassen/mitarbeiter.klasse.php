@@ -316,15 +316,23 @@ class Mitarbeiter
 
 			//Differenz berechnen
 			$ueber_std = subDateIntervals($standard_std,$richtige_std); #FUnktioniert auch, wenn weniger gearbeitet wird, als normal. Verrehcnet schon abgefeierte †st.
+			
+			
 			$interval = addDateIntervals($interval, $ueber_std);
 		
 
 			$erster = $erster->modify("+1 day") ;
 		}
-
+		
 
 		#Hier weerden †berstunden mitgezŠhlt
 		$total_hours = $interval->d * 24 + $interval->h;
+			
+			#Es kann auch passieren, dass zu wenig gearbeitet wird	
+		if ($interval->invert == 1) {
+			$total_hours *= -1;	
+		}
+
 		return $total_hours . ":" . $interval->format("%I");
 		
 		

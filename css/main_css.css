@@ -615,9 +615,17 @@ tr.hr td, tr.hr td hr
 	#transform: rotate(-20deg);
     color: rgba(179, 179, 179, 0.3) ;
 }
+
+#achtung_text
+{
+    color: rgb(232, 23, 120);
+    float: center;
+}
+
 #sonder_plan_text
 {
-    color: rgb(97, 211, 141) ;
+    color: rgb(97, 211, 141);
+    float: center;
 }
 #urlaub_text
 {

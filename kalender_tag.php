@@ -403,6 +403,21 @@ foreach ($alle_ma as $mitarbeiter) {
 </table>
 </div>
 
+<div id="inhalt_rechts_oben" >
+<?php
+
+if ( StandardPlanManager::funktioniert_problemlos($termin) ) {
+	echo "Dieser Tag ist gut durchgeplant.";
+} else {
+	echo 'Folgende Probleme treten auf:<br><br>';
+	$probleme = StandardPlanManager::probleme_am_termin($termin);
+	$text = implode("<br><br>",$probleme);
+	echo $text;
+}	
+
+
+?>
+</div>
 
 
 

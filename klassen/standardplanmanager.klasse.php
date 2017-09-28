@@ -109,8 +109,6 @@ class StandardPlanManager
 			$i->modify("+ 15 minutes");
 		}
 
-		
-		
 		return true;
 	}
 	
@@ -128,6 +126,43 @@ class StandardPlanManager
 			return false;
 		}
 	}
+	
+	/*
+	*	Beschreibt die Probleme, die  am gegebenen Termin auftreten. 
+	*	Return: array von strings
+	*/
+	public static function probleme_am_termin($termin) {
+		
+		if (StandardPlanManager::funktioniert_problemlos($termin) ){ return array(); }
+		$probleme = array();
+
+
+		#Regel nummer eins: Zwischen 6:45 und 16:16 muss immer eine Fachkraft anwesend sein. Gilt nur Montags-Freitags
+		if ($tag->tid >= 6) { return true; }
+		
+		$start = new DateTime("6:45");
+		$ende = new DateTime("16:15");
+
+		$i = clone $start;
+		while ($i <= $ende) {
+			
+			if ( StandardPlanManager::fachkraft_anwesend($termin, $i) == false ) {
+				$probleme[] = 'Um '.$i->format("H:i").' ist keine Fachkraft vorhanden.';
+			}
+			
+			$i->modify("+ 15 minutes");
+		}
+
+
+
+
+
+
+
+		return $probleme;
+		
+	}
+	
 	
 	
 }
